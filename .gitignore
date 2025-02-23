@@ -1,0 +1,67 @@
+# 🖥 .NET Core (Backend)
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.sqlite
+*.sqlite3
+.DS_Store
+.env
+secrets.json
+
+# ASP.NET / EF Core
+Migrations/
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Local.json
+appsettings.Staging.json
+Generated_Code/
+
+# Rider / VSCode / Visual Studio
+.vscode/
+.idea/
+*.suo
+*.user
+*.cache
+*.bak
+*.ncb
+*.log
+*.tlog
+*.pdb
+*.vs/
+
+# NuGet Packages
+*.nupkg
+.nuget/
+packages/
+project.lock.json
+project.assets.json
+
+# 🔥 React (Frontend)
+node_modules/
+build/
+dist/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.eslintcache
+.stylelintcache
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Miscellaneous
+*.log
+debug.log
+npm-debug.log
