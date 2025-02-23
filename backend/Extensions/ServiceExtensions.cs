@@ -21,23 +21,40 @@ public static class ServiceExtensions
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
 
-         // ✅ Add a simple Health Check service
+        // ✅ Add a simple Health Check service
         services.AddSingleton<IDatabaseHealthChecker>(new DatabaseHealthChecker(connectionString));
 
-        // ✅ Configure Identity (User Authentication)
-        //services.AddIdentity<ApplicationUser, IdentityRole>()
-         //   .AddEntityFrameworkStores<ApplicationDbContext>()
-            //.AddDefaultTokenProviders();
+        services.AddIdentity<User, IdentityRole>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
     }
 
-    public static void ConfigureJwtAuthentication(this IServiceCollection services)
+    public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         // ✅ Read JWT Secret from Environment Variables
-        var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") 
-            ?? throw new InvalidOperationException("JWT_SECRET is missing.");
+        var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET");
+
+        if (string.IsNullOrEmpty(jwtSecret))
+        {
+            Console.WriteLine("❌ ERROR: JWT_SECRET is null or empty!");
+            throw new Exception("JWT_SECRET is missing! Check your environment variables.");
+        }
+        else
+        {
+            Console.WriteLine($"✅ JWT_SECRET Loaded: {jwtSecret.Length} characters long");
+        }
+
         var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "YourApp";
         var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "YourUsers";
-        var key = Encoding.UTF8.GetBytes(jwtSecret);
+        // ✅ Convert to bytes using UTF-8
+        var keyBytes = Encoding.UTF8.GetBytes(jwtSecret);
+
+        if (keyBytes.Length < 16)
+        {
+            throw new Exception($"JWT_SECRET is too short! It must be at least 16 bytes (current: {keyBytes.Length} bytes)");
+        }
+
+        var key = new SymmetricSecurityKey(keyBytes);
 
         // ✅ Configure JWT Authentication
         services.AddAuthentication(options =>
@@ -51,12 +68,12 @@ public static class ServiceExtensions
             options.SaveToken = true;
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
+                 ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key, // ✅ Corrected: Pass `SymmetricSecurityKey`
                 ValidateIssuer = true,
-                ValidIssuer = jwtIssuer,
+                ValidIssuer = configuration["JWT_ISSUER"] ?? "your_app",
                 ValidateAudience = true,
-                ValidAudience = jwtAudience,
+                ValidAudience = configuration["JWT_AUDIENCE"] ?? "your_users",
                 ValidateLifetime = true
             };
         });

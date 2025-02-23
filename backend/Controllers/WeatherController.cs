@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -9,7 +10,9 @@ public class WeatherController : ControllerBase
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-    [HttpGet]
+    // 🔹 Only authenticated users can access
+    [Authorize]
+    [HttpGet("public")]
     public IActionResult GetWeatherForecast()
     {
         var forecast = Enumerable.Range(1, 5).Select(index =>
@@ -22,6 +25,23 @@ public class WeatherController : ControllerBase
             .ToArray();
 
         return Ok(forecast);
+    }
+
+    // 🔹 Only "admin" users can access this
+    [Authorize(Roles = "admin")]
+    [HttpGet("admin-only")]
+    public IActionResult GetAdminWeatherForecast()
+    {
+        var forecast = Enumerable.Range(1, 5).Select(index =>
+            new WeatherForecast
+            (
+                DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                Random.Shared.Next(-20, 55),
+                Summaries[Random.Shared.Next(Summaries.Length)]
+            ))
+            .ToArray();
+
+        return Ok(new { message = "🔒 This is a secure admin-only forecast!", forecast });
     }
 }
 

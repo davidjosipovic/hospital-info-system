@@ -1,12 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 public class Nurse
 {
     [Key]
     public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required]
-    public Guid UserId { get; set; }
-    public User? User { get; set; }
+    public string? UserId { get; set; } // ✅ Match IdentityUser<string> Id
+    [ForeignKey("UserId")]
+    public User? User { get; set; } // ✅ Explicitly define FK relationship
 
     [Required]
     public Guid DepartmentId { get; set; }
