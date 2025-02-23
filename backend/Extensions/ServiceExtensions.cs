@@ -21,6 +21,9 @@ public static class ServiceExtensions
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
 
+         // ✅ Add a simple Health Check service
+        services.AddSingleton<IDatabaseHealthChecker>(new DatabaseHealthChecker(connectionString));
+
         // ✅ Configure Identity (User Authentication)
         //services.AddIdentity<ApplicationUser, IdentityRole>()
          //   .AddEntityFrameworkStores<ApplicationDbContext>()
