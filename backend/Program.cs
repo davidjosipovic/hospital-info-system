@@ -1,48 +1,25 @@
+using DotNetEnv;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔹 Enable CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp",
-        policy => policy.WithOrigins("http://localhost:5173") // Allow React frontend
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
-});
+// ✅ Load Environment Variables from .env
+Env.Load();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// ✅ Use Extensions to Configure Services
+builder.Services.ConfigureDatabaseAndIdentity();
+builder.Services.ConfigureJwtAuthentication();
+builder.Services.ConfigureCors();
+builder.Services.ConfigureSwagger();
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// 🔹 Apply CORS policy BEFORE other middleware
-app.UseCors("AllowReactApp");
-
-// 🔹 Enable Swagger in Development mode
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.MapGet("/weatherforecast", () =>
-{
-    var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+// ✅ Use Middleware Extensions
+app.UseCustomMiddleware();
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
