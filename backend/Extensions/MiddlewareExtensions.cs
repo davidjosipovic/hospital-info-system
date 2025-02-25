@@ -11,6 +11,7 @@ public static class MiddlewareExtensions
             options.AddPolicy("AllowReactApp", policy =>
                 policy.WithOrigins(allowedOrigin)
                       .AllowAnyMethod()
+                      .AllowCredentials()
                       .AllowAnyHeader());
         });
     }
