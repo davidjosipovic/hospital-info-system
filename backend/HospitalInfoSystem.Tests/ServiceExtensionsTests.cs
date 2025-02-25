@@ -11,12 +11,11 @@ using FluentAssertions;
 public class ServiceExtensionsTests
 {
     private readonly IServiceCollection _services;
-    private readonly Mock<IConfiguration> _mockConfiguration;
+    
 
     public ServiceExtensionsTests()
     {
         _services = new ServiceCollection();
-        _mockConfiguration = new Mock<IConfiguration>();
 
         // ✅ Ensure Environment Variable is Set (Fix JWT_SECRET Issue)
         Environment.SetEnvironmentVariable("JWT_SECRET", "supersecretkey_1234567890");
@@ -50,10 +49,6 @@ public class ServiceExtensionsTests
                 Mock.Of<IAuthenticationSchemeProvider>(),
                 Mock.Of<IUserConfirmation<User>>()));
 
-        // ✅ Mock IConfiguration properly (Fix JWT_SECRET Issue)
-        _mockConfiguration.Setup(x => x["JWT_SECRET"]).Returns(Environment.GetEnvironmentVariable("JWT_SECRET"));
-        _mockConfiguration.Setup(x => x["JWT_ISSUER"]).Returns(Environment.GetEnvironmentVariable("JWT_ISSUER"));
-        _mockConfiguration.Setup(x => x["JWT_AUDIENCE"]).Returns(Environment.GetEnvironmentVariable("JWT_AUDIENCE"));
     }
 
     [Fact]
@@ -75,7 +70,7 @@ public class ServiceExtensionsTests
     public void ConfigureJwtAuthentication_ShouldRegisterAuthentication()
     {
         // ✅ Ensure JWT_SECRET is present
-        _services.ConfigureJwtAuthentication(_mockConfiguration.Object);
+        _services.ConfigureJwtAuthentication();
         var provider = _services.BuildServiceProvider();
 
         // ✅ Ensure authentication services are properly registered

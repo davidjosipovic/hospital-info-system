@@ -29,14 +29,16 @@ public static class ServiceExtensions
         .AddDefaultTokenProviders();
     }
 
-    public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureJwtAuthentication(this IServiceCollection services)
     {
         // ✅ Read JWT Secret from Environment Variables
         var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET");
+        var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "YourApp";
+        var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "YourUsers";
 
         if (string.IsNullOrEmpty(jwtSecret))
         {
-            Console.WriteLine("❌ ERROR: JWT_SECRET is null or empty!");
+            Console.WriteLine("ERROR: JWT_SECRET is null or empty!");
             throw new Exception("JWT_SECRET is missing! Check your environment variables.");
         }
         else
@@ -44,16 +46,8 @@ public static class ServiceExtensions
             Console.WriteLine($"✅ JWT_SECRET Loaded: {jwtSecret.Length} characters long");
         }
 
-        var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "YourApp";
-        var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "YourUsers";
         // ✅ Convert to bytes using UTF-8
         var keyBytes = Encoding.UTF8.GetBytes(jwtSecret);
-
-        if (keyBytes.Length < 16)
-        {
-            throw new Exception($"JWT_SECRET is too short! It must be at least 16 bytes (current: {keyBytes.Length} bytes)");
-        }
-
         var key = new SymmetricSecurityKey(keyBytes);
 
         // ✅ Configure JWT Authentication
@@ -71,9 +65,9 @@ public static class ServiceExtensions
                  ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key, // ✅ Corrected: Pass `SymmetricSecurityKey`
                 ValidateIssuer = true,
-                ValidIssuer = configuration["JWT_ISSUER"] ?? "your_app",
+                ValidIssuer = jwtIssuer ?? "your_app",
                 ValidateAudience = true,
-                ValidAudience = configuration["JWT_AUDIENCE"] ?? "your_users",
+                ValidAudience = jwtAudience ?? "your_users",
                 ValidateLifetime = true
             };
         });

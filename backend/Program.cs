@@ -7,10 +7,9 @@ Env.Load();
 
 // ✅ Use Extensions to Configure Services
 builder.Services.ConfigureDatabaseAndIdentity();
-builder.Services.ConfigureJwtAuthentication(builder.Configuration);
+builder.Services.ConfigureJwtAuthentication();
 builder.Services.ConfigureCors();
 builder.Services.ConfigureSwagger();
-
 builder.Services.AddControllers();
 
 var app = builder.Build();
