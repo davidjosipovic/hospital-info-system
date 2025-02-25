@@ -3,11 +3,11 @@ import { logout } from "./store/slices/authSlice";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
-import DashboardPage from "./pages/DashboardPage";
+import DashboardPage from "./pages/admin/DashboardPage";
 import ProtectedRoleRoute from "./components/ProtectedRoleRoute";
 import AdminSidebar from "./components/AdminSidebar";
-import PatientsPage from "./pages/PatientsPage";
-import DoctorsPage from "./pages/DoctorsPage";
+import PatientsPage from "./pages/staff/PatientsPage";
+import AppointmentsPage from "./pages/staff/AppointmentsPage";
 
 function App() {
   const { token, user } = useSelector((state) => state.auth);
@@ -67,15 +67,7 @@ function App() {
           }
         />
         <Route
-          path="/doctors"
-          element={
-            <ProtectedRoleRoute allowedRoles={["admin"]}>
-              <DoctorsPage />
-            </ProtectedRoleRoute>
-          }
-        />
-        <Route
-          path="/admin/appointments"
+          path="/staff/appointments"
           element={
             <ProtectedRoleRoute allowedRoles={["Admin", "Doctor", "Nurse"]}>
               <AppointmentsPage />
