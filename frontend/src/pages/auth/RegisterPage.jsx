@@ -10,7 +10,7 @@ function RegisterPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "user", // Default role
+    role: "",
   });
 
   const dispatch = useDispatch();
@@ -95,10 +95,10 @@ function RegisterPage() {
             value={formData.role}
             onChange={handleChange}
           >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
+            <option disabled value="">Role</option>
             <option value="doctor">Doctor</option>
             <option value="nurse">Nurse</option>
+            <option value="admin">Admin</option>
           </select>
           <button
             type="submit"

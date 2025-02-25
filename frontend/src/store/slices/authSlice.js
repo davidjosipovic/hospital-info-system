@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser, registerUser } from "../../api";
+import { loginUser, registerUser } from "../../api/api";
 import {jwtDecode} from "jwt-decode"; // ✅ Install: npm install jwt-decode
 
 // ✅ Function to Decode JWT Token

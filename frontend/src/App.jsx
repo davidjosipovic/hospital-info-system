@@ -5,6 +5,9 @@ import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProtectedRoleRoute from "./components/ProtectedRoleRoute";
+import AdminSidebar from "./components/AdminSidebar";
+import PatientsPage from "./pages/PatientsPage";
+import DoctorsPage from "./pages/DoctorsPage";
 
 function App() {
   const { token, user } = useSelector((state) => state.auth);
@@ -17,20 +20,68 @@ function App() {
   return (
     <div>
       <nav className="p-4 bg-gray-800 text-white flex justify-between">
+        <AdminSidebar onLogout={handleLogout} />
         <h1 className="text-xl">My App</h1>
         {token && (
           <div className="flex items-center">
             <span className="mr-4">Welcome, {user?.firstName}!</span>
-            <button onClick={handleLogout} className="bg-red-500 px-4 py-2 rounded">Logout</button>
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 px-4 py-2 rounded"
+            >
+              Logout
+            </button>
           </div>
-       )}
+        )}
       </nav>
 
       <Routes>
-        <Route path="/login" element={!token ? <LoginPage /> : <Navigate to="/dashboard" />} />
-        <Route path="/register" element={<ProtectedRoleRoute allowedRoles={["Admin"]}><RegisterPage /></ProtectedRoleRoute>} />
-        <Route path="/dashboard" element={token ? <DashboardPage /> : <Navigate to="/login" />} />
-        <Route path="/" element={token ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+        <Route
+          path="/login"
+          element={!token ? <LoginPage /> : <Navigate to="/dashboard" />}
+        />
+        <Route
+          path="/register"
+          element={
+            <ProtectedRoleRoute allowedRoles={["admin"]}>
+              <RegisterPage />
+            </ProtectedRoleRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={token ? <DashboardPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/"
+          element={
+            token ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/patients"
+          element={
+            <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
+              <PatientsPage />
+            </ProtectedRoleRoute>
+          }
+        />
+        <Route
+          path="/doctors"
+          element={
+            <ProtectedRoleRoute allowedRoles={["admin"]}>
+              <DoctorsPage />
+            </ProtectedRoleRoute>
+          }
+        />
+        <Route
+          path="/admin/appointments"
+          element={
+            <ProtectedRoleRoute allowedRoles={["Admin", "Doctor", "Nurse"]}>
+              <AppointmentsPage />
+            </ProtectedRoleRoute>
+          }
+        />
       </Routes>
     </div>
   );
