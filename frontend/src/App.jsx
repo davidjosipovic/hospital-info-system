@@ -10,7 +10,7 @@ function App() {
 
     return (
         <div>
-            <h1>Weather Forecast</h1>
+            <h1 className="">Weather Forecast</h1>
             {weatherData.length === 0 ? (
                 <p>Loading...</p>
             ) : (

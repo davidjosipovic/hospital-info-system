@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5214/api/weather"; // Adjust if needed
+const API_URL = "http://localhost:5214/api/weather/public"; // Adjust if needed
 
 export async function fetchWeather() {
     try {
