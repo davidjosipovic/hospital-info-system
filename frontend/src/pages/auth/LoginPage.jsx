@@ -18,7 +18,7 @@ function LoginPage() {
     const result = await dispatch(login(formData));
 
     if (result.meta.requestStatus === "fulfilled") {
-      navigate("/dashboard"); // Preusmjeri na dashboard
+      navigate("/");
     }
   };
 
