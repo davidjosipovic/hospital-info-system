@@ -9,6 +9,9 @@ import PatientsPage from "./pages/staff/PatientsPage";
 import AppointmentsPage from "./pages/staff/AppointmentsPage";
 import Navbar from "./components/ui/Navbar";
 import AuthGuard from "./components/auth/AuthGuard";
+import DoctorsPage from "./pages/admin/DoctorsPage";
+import DepartmentsPage from "./pages/admin/DepartmentsPage";
+import SpecialisationsPage from "./pages/admin/SpecialisationsPage";
 
 function App() {
   const { token, role } = useSelector((state) => state.auth);
@@ -30,6 +33,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/admin/dashboard" element={<DashboardPage />} />
+                
 
                 <Route
                   path="/admin/register"
@@ -45,6 +49,31 @@ function App() {
                   element={
                     <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
                       <PatientsPage />
+                    </ProtectedRoleRoute>
+                  }
+                />
+
+<Route
+                  path="/admin/doctors"
+                  element={
+                    <ProtectedRoleRoute allowedRoles={["admin"]}>
+                      <DoctorsPage />
+                    </ProtectedRoleRoute>
+                  }
+                />
+                <Route
+                  path="/admin/departments"
+                  element={
+                    <ProtectedRoleRoute allowedRoles={["admin"]}>
+                      <DepartmentsPage />
+                    </ProtectedRoleRoute>
+                  }
+                />
+                <Route
+                  path="/admin/specialisations"
+                  element={
+                    <ProtectedRoleRoute allowedRoles={["admin"]}>
+                      <SpecialisationsPage />
                     </ProtectedRoleRoute>
                   }
                 />
