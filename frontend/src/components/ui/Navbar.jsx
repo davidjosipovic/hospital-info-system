@@ -26,6 +26,8 @@ const Navbar = () => {
         { path: "/admin/users", label: "Users", icon: <Users className="w-5 h-5" /> },
         { path: "/admin/patients", label: "Patients", icon: <ClipboardList className="w-5 h-5" /> },
         { path: "/admin/doctors", label: "Doctors", icon: <UserCheck className="w-5 h-5" /> },
+        { path: "/admin/specializations", label: "Specializations", icon: <UserCheck className="w-5 h-5" /> },
+        { path: "/admin/departments", label: "Departments", icon: <UserCheck className="w-5 h-5" /> },
         { path: "/admin/register", label: "Register User", icon: <PlusCircle className="w-5 h-5 text-green-400" /> }, // ✅ Added Register Button
       ];
     } else if (role === "doctor" || role === "nurse") {
