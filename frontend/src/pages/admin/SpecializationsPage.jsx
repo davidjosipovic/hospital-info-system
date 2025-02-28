@@ -23,7 +23,7 @@ const SpecializationsPage = () => {
   }, [dispatch]);
 
   // Handle adding a new specialization
-  const handleAddSpecialzation = (e) => {
+  const handleAddSpecialization = (e) => {
     e.preventDefault();
     if (newSpecialization.trim()) {
       dispatch(addSpecialization({ name: newSpecialization }));

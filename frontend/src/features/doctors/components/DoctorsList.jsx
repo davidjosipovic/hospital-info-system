@@ -16,23 +16,36 @@ const DoctorsList = ({ doctors, onDelete, onEdit }) => {
       </thead>
       <tbody>
         {doctors.map((doctor) => {
-          // ✅ Find user associated with the doctor
           const user = users.find((user) => user.id === doctor.userId);
 
           return (
             <tr key={doctor.id} className="border-b">
               <td className="border p-2">{user?.firstName ?? "N/A"}</td>
               <td className="border p-2">{user?.lastName ?? "N/A"}</td>
-              
-              {/* ✅ Display specialization name */}
-              <td className="border p-2">{doctor.specialization?.name ?? "N/A"}</td>
 
-              {/* ✅ Display department name */}
+              <td className="border p-2">
+                {doctor.specialization?.name ?? "N/A"}
+              </td>
+
               <td className="border p-2">{doctor.department?.name ?? "N/A"}</td>
 
               <td className="border p-2 flex gap-2">
-                {onEdit && <button onClick={() => onEdit(doctor)} className="bg-blue-500 text-white px-2 py-1 rounded">Edit</button>}
-                {onDelete && <button onClick={() => onDelete(doctor.id)} className="bg-red-500 text-white px-2 py-1 rounded">Delete</button>}
+                {onEdit && (
+                  <button
+                    onClick={() => onEdit(doctor)}
+                    className="bg-blue-500 text-white px-2 py-1 rounded"
+                  >
+                    Edit
+                  </button>
+                )}
+                {onDelete && (
+                  <button
+                    onClick={() => onDelete(doctor.id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                )}
               </td>
             </tr>
           );

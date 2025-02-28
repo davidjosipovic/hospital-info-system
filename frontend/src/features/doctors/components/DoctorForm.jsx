@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Button from "../../../components/ui/Button";
 import Input from "../../../components/ui/Input";
 import { useNavigate } from "react-router-dom";
 
-
 const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
-  const dispatch = useDispatch();
-  const { users = [], loading: usersLoading } = useSelector((state) => state.users || { users: [] });
-  const { list: departments = [], loading: departmentsLoading } = useSelector((state) => state.departments || { list: [] });
-  const { list: specialisations = [], loading: specialisationsLoading } = useSelector((state) => state.specialisations || { list: [] });
+  const { users = [], loading: usersLoading } = useSelector(
+    (state) => state.users || { users: [] }
+  );
+  const { list: departments = [], loading: departmentsLoading } = useSelector(
+    (state) => state.departments || { list: [] }
+  );
+  const { list: specializations = [], loading: specializationsLoading } =
+    useSelector((state) => state.specializations || { list: [] });
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState(
@@ -21,16 +24,18 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
     }
   );
 
-
-  // ✅ Ensure users array is available before filtering
-  const availableDoctorUsers = Array.isArray(users) ? users.filter((user) => user.role === "doctor") : [];
+  const availableDoctorUsers = Array.isArray(users)
+    ? users.filter((user) => user.role === "doctor")
+    : [];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value || "" });
   };
 
   const handleUserChange = (e) => {
-    const selectedUser = availableDoctorUsers.find((user) => user.id === e.target.value);
+    const selectedUser = availableDoctorUsers.find(
+      (user) => user.id === e.target.value
+    );
     setFormData({
       ...formData,
       userId: selectedUser?.id || "",
@@ -40,8 +45,12 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Ensure all required fields are filled before submitting
-    if (!formData.userId || !formData.specializationId || !formData.departmentId || !formData.yearsOfExperience) {
+    if (
+      !formData.userId ||
+      !formData.specializationId ||
+      !formData.departmentId ||
+      !formData.yearsOfExperience
+    ) {
       alert("All fields are required!");
       return;
     }
@@ -50,23 +59,25 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
       userId: formData.userId,
       departmentId: formData.departmentId,
       specializationId: formData.specializationId,
-      licenseNumber: existingDoctor ? existingDoctor.licenseNumber : `LIC-${Math.floor(100000 + Math.random() * 900000)}`,
+      licenseNumber: existingDoctor
+        ? existingDoctor.licenseNumber
+        : `LIC-${Math.floor(100000 + Math.random() * 900000)}`,
       yearsOfExperience: parseInt(formData.yearsOfExperience, 10) || 0,
     };
 
     onSave(payload);
     onClose();
     window.location.reload();
-    
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-xl font-bold mb-4">{existingDoctor ? "Edit Doctor" : "Add New Doctor"}</h2>
+        <h2 className="text-xl font-bold mb-4">
+          {existingDoctor ? "Edit Doctor" : "Add New Doctor"}
+        </h2>
 
         <form onSubmit={handleSubmit}>
-          {/* User Selection */}
           {!existingDoctor && (
             <div>
               <label className="block font-medium mb-2">Select User</label>
@@ -94,11 +105,12 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
             </div>
           )}
 
-          {/* Specialization Selection */}
           <div>
-            <label className="block font-medium mb-2">Select Specialization</label>
-            {specialisationsLoading ? (
-              <p>Loading specialisations...</p>
+            <label className="block font-medium mb-2">
+              Select Specialization
+            </label>
+            {specializationsLoading ? (
+              <p>Loading specializations...</p>
             ) : (
               <select
                 name="specializationId"
@@ -107,8 +119,8 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
                 className="w-full p-2 border rounded"
               >
                 <option value="">-- Select a specialization --</option>
-                {specialisations.length > 0 ? (
-                  specialisations.map((spec) => (
+                {specializations.length > 0 ? (
+                  specializations.map((spec) => (
                     <option key={spec.id} value={spec.id}>
                       {spec.name}
                     </option>
@@ -120,7 +132,6 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
             )}
           </div>
 
-          {/* Department Selection */}
           <div>
             <label className="block font-medium mb-2">Select Department</label>
             {departmentsLoading ? (
@@ -146,7 +157,6 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
             )}
           </div>
 
-          {/* Years of Experience Input */}
           <Input
             name="yearsOfExperience"
             type="number"

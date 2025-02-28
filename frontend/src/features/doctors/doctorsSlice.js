@@ -1,44 +1,55 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getDoctors, createDoctor, updateDoctor, deleteDoctor } from "./doctorsApi";
+import {
+  getDoctors,
+  createDoctor,
+  updateDoctor,
+  deleteDoctor,
+} from "./doctorsApi";
 
-// ✅ Fetch all doctors
-export const fetchDoctors = createAsyncThunk("doctors/fetchDoctors", async (_, { rejectWithValue }) => {
-  try {
-    return await getDoctors();
-  } catch (error) {
-    return rejectWithValue(error);
+export const fetchDoctors = createAsyncThunk(
+  "doctors/fetchDoctors",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await getDoctors();
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
-});
+);
 
-export const addDoctor = createAsyncThunk("doctors/addDoctor", async (doctorData, { rejectWithValue }) => {
-  try {
-    return await createDoctor(doctorData);
-  } catch (error) {
-    return rejectWithValue(error);
+export const addDoctor = createAsyncThunk(
+  "doctors/addDoctor",
+  async (doctorData, { rejectWithValue }) => {
+    try {
+      return await createDoctor(doctorData);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
-});
+);
 
-
-
-
-// ✅ Update an existing doctor
-export const editDoctor = createAsyncThunk("doctors/editDoctor", async ({ id, doctorData }, { rejectWithValue }) => {
-  try {
-    return await updateDoctor(id, doctorData);
-  } catch (error) {
-    return rejectWithValue(error);
+export const editDoctor = createAsyncThunk(
+  "doctors/editDoctor",
+  async ({ id, doctorData }, { rejectWithValue }) => {
+    try {
+      return await updateDoctor(id, doctorData);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
-});
+);
 
-// ✅ Delete doctor (Admin only)
-export const removeDoctor = createAsyncThunk("doctors/removeDoctor", async (id, { rejectWithValue }) => {
-  try {
-    await deleteDoctor(id);
-    return id; // Return ID so Redux can remove from state
-  } catch (error) {
-    return rejectWithValue(error);
+export const removeDoctor = createAsyncThunk(
+  "doctors/removeDoctor",
+  async (id, { rejectWithValue }) => {
+    try {
+      await deleteDoctor(id);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
-});
+);
 
 const doctorsSlice = createSlice({
   name: "doctors",
@@ -50,7 +61,7 @@ const doctorsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // ✅ Fetch doctors
+
       .addCase(fetchDoctors.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -63,9 +74,7 @@ const doctorsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      
 
-      // ✅ Add doctor
       .addCase(addDoctor.pending, (state) => {
         state.loading = true;
       })
@@ -78,13 +87,14 @@ const doctorsSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ✅ Update doctor
       .addCase(editDoctor.pending, (state) => {
         state.loading = true;
       })
       .addCase(editDoctor.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.doctors.findIndex((doctor) => doctor.id === action.payload.id);
+        const index = state.doctors.findIndex(
+          (doctor) => doctor.id === action.payload.id
+        );
         if (index !== -1) {
           state.doctors[index] = action.payload;
         }
@@ -94,13 +104,14 @@ const doctorsSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ✅ Delete doctor
       .addCase(removeDoctor.pending, (state) => {
         state.loading = true;
       })
       .addCase(removeDoctor.fulfilled, (state, action) => {
         state.loading = false;
-        state.doctors = state.doctors.filter((doctor) => doctor.id !== action.payload);
+        state.doctors = state.doctors.filter(
+          (doctor) => doctor.id !== action.payload
+        );
       })
       .addCase(removeDoctor.rejected, (state, action) => {
         state.loading = false;
