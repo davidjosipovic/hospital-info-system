@@ -1,4 +1,4 @@
-import { api } from "./api"; // ✅ Uses Axios instance
+import { api } from "../../api/api"; // ✅ Uses Axios instance
 
 // ✅ GET: Fetch all departments
 export const getDepartment = async () => {

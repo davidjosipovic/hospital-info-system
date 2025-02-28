@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPatients } from "../../store/slices/patientsSlice";
-import PatientsList from "../../components/patients/PatientsList";
+import { fetchPatients } from "../../features/patients/patientsSlice";
+import PatientsList from "../../features/patients/components/PatientsList";
 
 const PatientsPage = () => {
   const dispatch = useDispatch();

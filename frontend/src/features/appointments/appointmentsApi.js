@@ -1,4 +1,4 @@
-import { api } from "./api"; // ✅ Koristi Axios instancu
+import { api } from "../../api/api"; // ✅ Koristi Axios instancu
 
 export const getAppointments = async () => {
   try {

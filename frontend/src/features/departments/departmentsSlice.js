@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getDepartment, createDepartment, updateDepartment, deleteDepartment } from "../../api/departmentsApi";
+import { getDepartment, createDepartment, updateDepartment, deleteDepartment } from "../departments/departmentsApi";
 
 // ✅ Fetch departments
 export const fetchDepartments = createAsyncThunk("departments/fetch", async () => {

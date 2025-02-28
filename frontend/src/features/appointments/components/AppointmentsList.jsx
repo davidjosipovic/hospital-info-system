@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "../ui/Table";
+import Table from "../../../components/ui/Table";
 
 const AppointmentsList = ({ appointments }) => {
   return (

@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/admin/DashboardPage";
-import ProtectedRoleRoute from "./components/ProtectedRoleRoute";
+import ProtectedRoleRoute from "./components/auth/ProtectedRoleRoute";
 import HomePage from "./pages/HomePage";
 import PatientsPage from "./pages/staff/PatientsPage";
 import AppointmentsPage from "./pages/staff/AppointmentsPage";
@@ -11,7 +11,7 @@ import Navbar from "./components/ui/Navbar";
 import AuthGuard from "./components/auth/AuthGuard";
 import DoctorsPage from "./pages/admin/DoctorsPage";
 import DepartmentsPage from "./pages/admin/DepartmentsPage";
-import SpecialisationsPage from "./pages/admin/SpecialisationsPage";
+import SpecializationsPage from "./pages/admin/SpecializationsPage";
 
 function App() {
   const { token, role } = useSelector((state) => state.auth);
@@ -70,10 +70,10 @@ function App() {
                   }
                 />
                 <Route
-                  path="/admin/specialisations"
+                  path="/admin/specializations"
                   element={
                     <ProtectedRoleRoute allowedRoles={["admin"]}>
-                      <SpecialisationsPage />
+                      <SpecializationsPage />
                     </ProtectedRoleRoute>
                   }
                 />

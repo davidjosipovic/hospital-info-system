@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDoctors, addDoctor, editDoctor, removeDoctor } from "../../store/slices/doctorsSlice";
+import { fetchDoctors, addDoctor, editDoctor, removeDoctor } from "../../features/doctors/doctorsSlice";
 import { fetchUsers } from "../../store/slices/usersSlice";  // ✅ Fetch users
-import { fetchDepartments } from "../../store/slices/departmentsSlice";
-import { fetchSpecialisations } from "../../store/slices/specialisationsSlice";
-import DoctorsList from "../../components/doctors/DoctorsList";
-import DoctorForm from "../../components/doctors/DoctorForm";
+import { fetchDepartments } from "../../features/departments/departmentsSlice";
+import { fetchSpecializations } from "../../features/specializations/specializationsSlice";
+import DoctorsList from "../../features/doctors/components/DoctorsList";
+import DoctorForm from "../../features/doctors/components/DoctorForm";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import { PlusCircle, Loader } from "lucide-react";
@@ -24,7 +24,7 @@ const DoctorsPage = () => {
     dispatch(fetchDoctors());
     dispatch(fetchUsers());  // ✅ Fetch users when the page loads
     dispatch(fetchDepartments())
-    dispatch(fetchSpecialisations())
+    dispatch(fetchSpecializations())
   }, [dispatch]);
 
   const handleDelete = async (id) => {

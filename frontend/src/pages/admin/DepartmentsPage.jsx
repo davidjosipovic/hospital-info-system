@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDepartments, addDepartment, editDepartment, removeDepartment } from "../../store/slices/departmentsSlice";
+import { fetchDepartments, addDepartment, editDepartment, removeDepartment } from "../../features/departments/departmentsSlice";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 
