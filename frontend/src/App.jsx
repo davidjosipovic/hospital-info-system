@@ -5,7 +5,7 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/admin/DashboardPage";
 import ProtectedRoleRoute from "./components/auth/ProtectedRoleRoute";
 import HomePage from "./pages/HomePage";
-import PatientsPage from "./pages/staff/PatientsPage";
+import PatientsPage from "./pages/admin/PatientsPage";
 import AppointmentsPage from "./pages/staff/AppointmentsPage";
 import Navbar from "./components/ui/Navbar";
 import AuthGuard from "./components/auth/AuthGuard";
@@ -45,7 +45,7 @@ function App() {
                 />
 
                 <Route
-                  path="/patients"
+                  path="/admin/patients"
                   element={
                     <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
                       <PatientsPage />
@@ -83,6 +83,14 @@ function App() {
                   element={
                     <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
                       <AppointmentsPage />
+                    </ProtectedRoleRoute>
+                  }
+                />
+                 <Route
+                  path="/patients"
+                  element={
+                    <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
+                      <PatientsPage />
                     </ProtectedRoleRoute>
                   }
                 />
