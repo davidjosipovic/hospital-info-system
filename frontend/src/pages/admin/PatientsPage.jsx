@@ -28,7 +28,10 @@ const PatientsPage = () => {
     setSelectedPatient(patient);
     setIsModalOpen(true);
   };
-
+  const refreshPatients = () => {
+    dispatch(fetchPatients()); // Re-fetch the updated list of patients
+  };
+  
   const handleAddPatient = () => {
     setSelectedPatient(null);
     setIsModalOpen(true);
@@ -70,9 +73,10 @@ const PatientsPage = () => {
 
       {isModalOpen && (
         <PatientForm
-          onClose={handleCloseModal}
-          onSave={handleSavePatient}
-          existingPatient={selectedPatient}
+        onClose={handleCloseModal}
+        onSave={handleSavePatient}
+        existingPatient={selectedPatient}
+        refreshPatients={refreshPatients} 
         />
       )}
     </div>

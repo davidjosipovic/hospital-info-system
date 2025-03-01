@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../../../components/ui/Button";
 import Input from "../../../components/ui/Input";
 
-const PatientForm = ({ onClose, onSave, existingPatient }) => {
+const PatientForm = ({ onClose, onSave, existingPatient, refreshPatients=()=>{} }) => {
   const [formData, setFormData] = useState(
     existingPatient || {
       firstName: "",
@@ -15,13 +15,30 @@ const PatientForm = ({ onClose, onSave, existingPatient }) => {
     }
   );
 
+  useEffect(() => {
+    if (existingPatient) {
+      setFormData({
+        firstName: existingPatient.firstName || "",
+        lastName: existingPatient.lastName || "",
+        dateOfBirth: existingPatient.dateOfBirth 
+          ? new Date(existingPatient.dateOfBirth).toISOString().split("T")[0] // Converts ISO to YYYY-MM-DD
+          : "",
+        gender: existingPatient.gender || "",
+        phoneNumber: existingPatient.phoneNumber || "",
+        address: existingPatient.address || "",
+        emergencyContact: existingPatient.emergencyContact || "",
+      });
+    }
+  }, [existingPatient]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
+    await onSave(formData);
+    refreshPatients(); // Refresh list after saving
     onClose();
   };
 

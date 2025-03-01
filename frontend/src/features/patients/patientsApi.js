@@ -37,6 +37,7 @@ export const updatePatient = async (id, patientData) => {
     console.log("Original date:", patientData.dateOfBirth);
 
     const formattedData = {
+      id:id,
       firstName: patientData.firstName?.trim(),
       lastName: patientData.lastName?.trim(),
       dateOfBirth: new Date(patientData.dateOfBirth).toISOString(), // Ensure UTC format
@@ -45,7 +46,7 @@ export const updatePatient = async (id, patientData) => {
       address: patientData.address || null,
       emergencyContact: patientData.emergencyContact || null,
     };
-
+    
     console.log("Formatted date:", formattedData.dateOfBirth);
     const response = await api.put(`/patients/${id}`, formattedData);
     return response.data;
