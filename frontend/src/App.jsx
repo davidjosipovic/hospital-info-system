@@ -33,7 +33,7 @@ function App() {
             <AuthGuard>
               <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/admin/dashboard" element={<DashboardPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
                 
 
                 <Route
