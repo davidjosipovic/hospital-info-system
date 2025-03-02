@@ -12,6 +12,7 @@ import AuthGuard from "./components/auth/AuthGuard";
 import DoctorsPage from "./pages/admin/DoctorsPage";
 import DepartmentsPage from "./pages/admin/DepartmentsPage";
 import SpecializationsPage from "./pages/admin/SpecializationsPage";
+import UsersPage from "./pages/admin/UsersPage";
 
 function App() {
   const { token, role } = useSelector((state) => state.auth);
@@ -49,6 +50,14 @@ function App() {
                   element={
                     <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
                       <PatientsPage />
+                    </ProtectedRoleRoute>
+                  }
+                />
+                 <Route
+                  path="/admin/users"
+                  element={
+                    <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
+                      <UsersPage />
                     </ProtectedRoleRoute>
                   }
                 />

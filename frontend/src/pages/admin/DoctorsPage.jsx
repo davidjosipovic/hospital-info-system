@@ -6,7 +6,7 @@ import {
   editDoctor,
   addDoctor,
 } from "../../features/doctors/doctorsSlice";
-import { fetchUsers } from "../../store/slices/usersSlice";
+import { fetchUsers } from "../../features/users/usersSlice";
 import { fetchDepartments } from "../../features/departments/departmentsSlice";
 import { fetchSpecializations } from "../../features/specializations/specializationsSlice";
 import DoctorsHeader from "../../features/doctors/components/DoctorsHeader";

@@ -3,7 +3,7 @@ import authReducer from "./slices/authSlice";
 import patientsReducer from "../features/patients/patientsSlice";
 import doctorsReducer from "../features/doctors/doctorsSlice";
 import appointmentsReducer from "../features/appointments/appointmentsSlice";
-import usersReducer from "./slices/usersSlice";
+import usersReducer from "../features/users/usersSlice";
 import departmentsReducer from "../features/departments/departmentsSlice";
 import specializationsReducer from  "../features/specializations/specializationsSlice";
 
