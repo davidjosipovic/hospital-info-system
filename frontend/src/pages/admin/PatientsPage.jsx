@@ -29,7 +29,7 @@ const PatientsPage = () => {
     setIsModalOpen(true);
   };
   const refreshPatients = () => {
-    dispatch(fetchPatients()); // Re-fetch the updated list of patients
+    dispatch(fetchPatients()); 
   };
   
   const handleAddPatient = () => {

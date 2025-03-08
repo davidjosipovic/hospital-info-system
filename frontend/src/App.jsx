@@ -16,17 +16,15 @@ import UsersPage from "./pages/admin/UsersPage";
 
 function App() {
   const { token, role } = useSelector((state) => state.auth);
-
+  
   return (
     <div>
-      {/* ✅ Show Navbar only when user is logged in */}
       {token && <Navbar />}
-
       <Routes>
-        {/* ✅ Public Route (Redirect if Logged In) */}
-        <Route path="/login" element={!token ? <LoginPage /> : <Navigate to="/" />} />
-
-        {/* ✅ Protected Routes inside `AuthGuard` */}
+        <Route
+          path="/login"
+          element={!token ? <LoginPage /> : <Navigate to="/" />}
+        />
         <Route
           path="/*"
           element={
@@ -34,7 +32,6 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
-                
 
                 <Route
                   path="/admin/register"
@@ -44,25 +41,27 @@ function App() {
                     </ProtectedRoleRoute>
                   }
                 />
-
                 <Route
                   path="/admin/patients"
                   element={
-                    <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
+                    <ProtectedRoleRoute
+                      allowedRoles={["admin", "doctor", "nurse"]}
+                    >
                       <PatientsPage />
                     </ProtectedRoleRoute>
                   }
                 />
-                 <Route
+                <Route
                   path="/admin/users"
                   element={
-                    <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
+                    <ProtectedRoleRoute
+                      allowedRoles={["admin", "doctor", "nurse"]}
+                    >
                       <UsersPage />
                     </ProtectedRoleRoute>
                   }
                 />
-
-<Route
+                <Route
                   path="/admin/doctors"
                   element={
                     <ProtectedRoleRoute allowedRoles={["admin"]}>
@@ -86,19 +85,22 @@ function App() {
                     </ProtectedRoleRoute>
                   }
                 />
-
                 <Route
                   path="/appointments"
                   element={
-                    <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
+                    <ProtectedRoleRoute
+                      allowedRoles={["admin", "doctor", "nurse"]}
+                    >
                       <AppointmentsPage />
                     </ProtectedRoleRoute>
                   }
                 />
-                 <Route
+                <Route
                   path="/patients"
                   element={
-                    <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
+                    <ProtectedRoleRoute
+                      allowedRoles={["admin", "doctor", "nurse"]}
+                    >
                       <PatientsPage />
                     </ProtectedRoleRoute>
                   }

@@ -13,7 +13,7 @@ const store = configureStore({
     patients: patientsReducer,
     doctors: doctorsReducer,
     appointments: appointmentsReducer,
-    users: usersReducer, // Ensure this matches what useSelector expects
+    users: usersReducer,
     departments: departmentsReducer,
     specializations: specializationsReducer,
   },
