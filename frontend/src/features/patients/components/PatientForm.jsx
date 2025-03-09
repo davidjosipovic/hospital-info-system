@@ -21,7 +21,7 @@ const PatientForm = ({ onClose, onSave, existingPatient, refreshPatients=()=>{} 
         firstName: existingPatient.firstName || "",
         lastName: existingPatient.lastName || "",
         dateOfBirth: existingPatient.dateOfBirth 
-          ? new Date(existingPatient.dateOfBirth).toISOString().split("T")[0] // Converts ISO to YYYY-MM-DD
+          ? new Date(existingPatient.dateOfBirth).toISOString().split("T")[0]
           : "",
         gender: existingPatient.gender || "",
         phoneNumber: existingPatient.phoneNumber || "",
@@ -38,7 +38,7 @@ const PatientForm = ({ onClose, onSave, existingPatient, refreshPatients=()=>{} 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await onSave(formData);
-    refreshPatients(); // Refresh list after saving
+    refreshPatients(); 
     onClose();
   };
 

@@ -1,6 +1,5 @@
-import { api } from "../../api/api"; // ✅ Uses Axios instance
+import { api } from "../../api/api"; 
 
-// ✅ GET: Fetch all specializations
 export const getSpecializations = async () => {
   try {
     const response = await api.get("/specializations");
@@ -10,7 +9,7 @@ export const getSpecializations = async () => {
   }
 };
 
-// ✅ POST: Add a new specialization
+
 export const createSpecialization = async (specializationData) => {
   try {
     const response = await api.post("/specializations", specializationData);
@@ -20,7 +19,7 @@ export const createSpecialization = async (specializationData) => {
   }
 };
 
-// ✅ PUT: Update specialization details
+
 export const updateSpecialization = async (id, specializationData) => {
   try {
     const response = await api.put(`/specializations/${id}`, specializationData);
@@ -30,11 +29,11 @@ export const updateSpecialization = async (id, specializationData) => {
   }
 };
 
-// ✅ DELETE: Remove a specialization (Admin only)
+
 export const deleteSpecialization = async (id) => {
   try {
     await api.delete(`/specializations/${id}`);
-    return id; // Return ID so Redux can remove it from state
+    return id; 
   } catch (error) {
     throw error.response?.data || "Greška pri brisanju specijalizacije.";
   }

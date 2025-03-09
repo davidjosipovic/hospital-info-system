@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5214/api"; // 🚀 Postavi pravi backend URL
+const API_BASE_URL = "http://localhost:5214/api"; 
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -9,7 +9,6 @@ export const api = axios.create({
   },
 });
 
-// ✅ Attach token to every request
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -18,7 +17,6 @@ api.interceptors.request.use((config) => {
     return config;
   });
 
-// ✅ Login API poziv
 export const loginUser = async (credentials) => {
   try {
     const response = await api.post("/auth/login",
@@ -31,7 +29,6 @@ export const loginUser = async (credentials) => {
   }
 };
 
-// ✅ Register API poziv
 export const registerUser = async (userData) => {
   try {
     const response = await api.post("/auth/register", userData);

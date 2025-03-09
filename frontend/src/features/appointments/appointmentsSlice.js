@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAppointments } from "./appointmentsApi"; // ✅ Import API funkcije
+import { getAppointments } from "./appointmentsApi";
 
-// ✅ Async action za dohvaćanje termina
 export const fetchAppointments = createAsyncThunk("appointments/fetchAppointments", async (_, { rejectWithValue }) => {
   try {
     return await getAppointments();

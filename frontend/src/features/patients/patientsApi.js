@@ -40,7 +40,7 @@ export const updatePatient = async (id, patientData) => {
       id:id,
       firstName: patientData.firstName?.trim(),
       lastName: patientData.lastName?.trim(),
-      dateOfBirth: new Date(patientData.dateOfBirth).toISOString(), // Ensure UTC format
+      dateOfBirth: new Date(patientData.dateOfBirth).toISOString(), 
       gender: patientData.gender,
       phoneNumber: patientData.phoneNumber || null,
       address: patientData.address || null,

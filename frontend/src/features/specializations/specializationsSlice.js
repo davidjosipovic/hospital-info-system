@@ -6,22 +6,22 @@ import {
   deleteSpecialization,
 } from "./specializationsApi";
 
-// ✅ Fetch specializations
+
 export const fetchSpecializations = createAsyncThunk("specializations/fetch", async () => {
   return await getSpecializations();
 });
 
-// ✅ Add specialization
+
 export const addSpecialization = createAsyncThunk("specializations/add", async (data) => {
   return await createSpecialization(data);
 });
 
-// ✅ Update specialization
+
 export const editSpecialization = createAsyncThunk("specializations/edit", async ({ id, data }) => {
   return await updateSpecialization(id, data);
 });
 
-// ✅ Delete specialization
+
 export const removeSpecialization = createAsyncThunk("specializations/delete", async (id) => {
   return await deleteSpecialization(id);
 });

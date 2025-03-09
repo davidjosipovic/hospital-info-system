@@ -1,8 +1,8 @@
-import { api } from "../../api/api"; // ✅ Koristi Axios instancu
+import { api } from "../../api/api";
 
 export const getAppointments = async () => {
   try {
-    const response = await api.get("/appointments"); // ⚠️ Prilagodi rutu API-ja ako je drugačija
+    const response = await api.get("/appointments"); 
     return response.data;
   } catch (error) {
     throw error.response?.data || "Greška pri dohvaćanju termina.";

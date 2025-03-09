@@ -1,22 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getDepartment, createDepartment, updateDepartment, deleteDepartment } from "./departmentsApi";
 
-// ✅ Fetch departments
+
 export const fetchDepartments = createAsyncThunk("departments/fetch", async () => {
   return await getDepartment();
 });
 
-// ✅ Add department
+
 export const addDepartment = createAsyncThunk("departments/add", async (data) => {
   return await createDepartment(data);
 });
 
-// ✅ Update department
+
 export const editDepartment = createAsyncThunk("departments/edit", async ({ id, data }) => {
   return await updateDepartment(id, data);
 });
 
-// ✅ Delete department
+
 export const removeDepartment = createAsyncThunk("departments/delete", async (id) => {
   return await deleteDepartment(id);
 });
