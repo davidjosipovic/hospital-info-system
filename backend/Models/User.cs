@@ -13,7 +13,7 @@ public class User : IdentityUser
 
     [Required]
     [StringLength(50)]
-    [EnumDataType(typeof(UserRole))] // ✅ Enforces allowed roles
+    [EnumDataType(typeof(UserRole))] 
     public string? Role { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

@@ -15,5 +15,5 @@ public class PatientRoomAssignment
     [Required]
     public DateTime AssignedDate { get; set; } = DateTime.UtcNow;
 
-    public DateTime? ReleasedDate { get; set; } // Nullable (NULL when patient is still assigned)
+    public DateTime? ReleasedDate { get; set; } 
 }

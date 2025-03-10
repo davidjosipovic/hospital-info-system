@@ -15,7 +15,7 @@ public class Patient
 
     [Required]
     [StringLength(10)]
-    public string? Gender { get; set; } // "Male", "Female", "Other"
+    public string? Gender { get; set; } 
 
     [StringLength(20)]
     public string? PhoneNumber { get; set; }

@@ -5,10 +5,10 @@ public class HospitalRoom
     public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required]
-    public int RoomNumber { get; set; } // Must be unique
+    public int RoomNumber { get; set; } 
 
     [Required]
-    public int Capacity { get; set; } // Total beds in the room
+    public int Capacity { get; set; } 
 
-    public int CurrentPatients { get; set; } = 0; // Defaults to 0
+    public int CurrentPatients { get; set; } = 0; 
 }

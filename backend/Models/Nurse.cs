@@ -6,9 +6,9 @@ public class Nurse
     public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required]
-    public string? UserId { get; set; } // ✅ Match IdentityUser<string> Id
+    public string? UserId { get; set; } 
     [ForeignKey("UserId")]
-    public User? User { get; set; } // ✅ Explicitly define FK relationship
+    public User? User { get; set; } 
 
     [Required]
     public Guid DepartmentId { get; set; }

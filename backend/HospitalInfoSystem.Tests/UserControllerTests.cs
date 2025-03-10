@@ -39,7 +39,7 @@ public class UsersControllerTests
     [Fact]
     public async Task GetUsers_ShouldReturnListOfUsers()
     {
-        // Arrange
+      
         var users = new List<User>
         {
             new User { Id = "1", FirstName = "John", LastName = "Doe", Email = "john@example.com" },
@@ -58,10 +58,10 @@ public class UsersControllerTests
 
         _mockUserManager.Setup(x => x.Users).Returns(mockUserDbSet.Object);
 
-        // Act
+      
         var result = await _controller.GetUsers();
 
-        // Assert
+      
         result.Value.Should().NotBeNull();
         result.Value.Should().HaveCount(2);
     }
@@ -69,26 +69,26 @@ public class UsersControllerTests
     [Fact]
     public async Task UpdateUser_ShouldReturnNoContent_WhenUpdateIsSuccessful()
     {
-        // Arrange
+     
         var user = new User { Id = "1", FirstName = "Old Name" };
         _mockUserManager.Setup(x => x.FindByIdAsync("1")).ReturnsAsync(user);
         _mockUserManager.Setup(x => x.UpdateAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
 
         var updates = new Dictionary<string, object> { { "firstName", "New Name" } };
 
-        // Act
+      
         var result = await _controller.UpdateUser("1", updates);
 
-        // Assert
+     
         result.Should().BeOfType<NoContentResult>();
-        user.FirstName.Should().Be("New Name"); // Verify update worked
+        user.FirstName.Should().Be("New Name"); 
         _mockUserManager.Verify(x => x.UpdateAsync(user), Times.Once);
     }
 
     [Fact]
     public async Task UpdateUser_ShouldReturnBadRequest_WhenUpdateFails()
     {
-        // Arrange
+     
         var user = new User { Id = "1", FirstName = "Old Name" };
         var identityErrors = new List<IdentityError>
         {
@@ -99,10 +99,10 @@ public class UsersControllerTests
 
         var updates = new Dictionary<string, object> { { "firstName", "New Name" } };
 
-        // Act
+   
         var result = await _controller.UpdateUser("1", updates);
 
-        // Assert
+     
         result.Should().BeOfType<BadRequestObjectResult>()
               .Which.Value.Should().BeEquivalentTo(identityErrors);
     }
@@ -110,15 +110,15 @@ public class UsersControllerTests
     [Fact]
     public async Task DeleteUser_ShouldReturnNoContent_WhenUserExists()
     {
-        // Arrange
+  
         var user = new User { Id = "1", FirstName = "John" };
         _mockUserManager.Setup(x => x.FindByIdAsync("1")).ReturnsAsync(user);
         _mockUserManager.Setup(x => x.DeleteAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
 
-        // Act
+ 
         var result = await _controller.DeleteUser("1");
 
-        // Assert
+   
         result.Should().BeOfType<NoContentResult>();
         _mockUserManager.Verify(x => x.DeleteAsync(user), Times.Once);
     }
@@ -126,7 +126,7 @@ public class UsersControllerTests
     [Fact]
     public async Task DeleteUser_ShouldReturnBadRequest_WhenDeleteFails()
     {
-        // Arrange
+    
         var user = new User { Id = "1", FirstName = "John" };
         var identityErrors = new List<IdentityError>
         {
@@ -135,16 +135,16 @@ public class UsersControllerTests
         _mockUserManager.Setup(x => x.FindByIdAsync("1")).ReturnsAsync(user);
         _mockUserManager.Setup(x => x.DeleteAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Failed(identityErrors.ToArray()));
 
-        // Act
+    
         var result = await _controller.DeleteUser("1");
 
-        // Assert
+    
         result.Should().BeOfType<BadRequestObjectResult>()
               .Which.Value.Should().BeEquivalentTo(identityErrors);
     }
 }
 
-// ✅ Implements async enumeration for IQueryable<T>
+
 internal class TestAsyncEnumerator<T> : IAsyncEnumerator<T>
 {
     private readonly IEnumerator<T> _inner;
