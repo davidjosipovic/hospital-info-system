@@ -12,14 +12,12 @@ public class HospitalRoomsController : ControllerBase
         _context = context;
     }
 
-    // GET: api/hospitalrooms
     [HttpGet]
     public async Task<ActionResult<IEnumerable<HospitalRoom>>> GetHospitalRooms()
     {
         return await _context.HospitalRooms.ToListAsync();
     }
 
-    // GET: api/hospitalrooms/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<HospitalRoom>> GetHospitalRoom(Guid id)
     {
@@ -33,7 +31,6 @@ public class HospitalRoomsController : ControllerBase
         return hospitalRoom;
     }
 
-    // POST: api/hospitalrooms
     [HttpPost]
     public async Task<ActionResult<HospitalRoom>> CreateHospitalRoom(HospitalRoom hospitalRoom)
     {
@@ -43,13 +40,18 @@ public class HospitalRoomsController : ControllerBase
             return BadRequest("Room number must be unique.");
         }
 
+        // Ensure CurrentPatients does not exceed Capacity
+        if (hospitalRoom.CurrentPatients > hospitalRoom.Capacity)
+        {
+            return BadRequest("Current patients cannot exceed room capacity.");
+        }
+
         _context.HospitalRooms.Add(hospitalRoom);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetHospitalRoom), new { id = hospitalRoom.Id }, hospitalRoom);
     }
 
-    // PUT: api/hospitalrooms/{id}
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateHospitalRoom(Guid id, HospitalRoom hospitalRoom)
     {
@@ -62,6 +64,12 @@ public class HospitalRoomsController : ControllerBase
         if (_context.HospitalRooms.Any(r => r.RoomNumber == hospitalRoom.RoomNumber && r.Id != id))
         {
             return BadRequest("Room number must be unique.");
+        }
+
+        // Ensure CurrentPatients does not exceed Capacity
+        if (hospitalRoom.CurrentPatients > hospitalRoom.Capacity)
+        {
+            return BadRequest("Current patients cannot exceed room capacity.");
         }
 
         _context.Entry(hospitalRoom).State = EntityState.Modified;
@@ -85,7 +93,6 @@ public class HospitalRoomsController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/hospitalrooms/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteHospitalRoom(Guid id)
     {

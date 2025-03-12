@@ -6,9 +6,11 @@ import {
   LayoutDashboard,
   Users,
   Calendar,
-  UserCheck,
   ClipboardList,
-  PlusCircle,
+  UserCheck,
+  FileText,
+  NotebookPen,
+  Box,
 } from "lucide-react";
 import { logout } from "../../store/slices/authSlice";
 
@@ -22,36 +24,36 @@ const Navbar = () => {
   };
 
   const getNavigation = () => {
-    const baseLinks = [
+    const commonLinks = [
       {
-        path: "/",
-        label: "Dashboard",
-        icon: <LayoutDashboard className="w-5 h-5" />,
-      },
-      {
-        path: "/appointments",
-        label: "Appointments",
-        icon: <Calendar className="w-5 h-5" />,
+        path: "/profile",
+        label: "Profile",
+        icon: <FileText className="w-5 h-5" />,
       },
     ];
 
     if (role === "admin") {
       return [
-        ...baseLinks,
+        ...commonLinks,
+        {
+          path: "/",
+          label: "Dashboard",
+          icon: <LayoutDashboard className="w-5 h-5" />,
+        },
         {
           path: "/admin/users",
-          label: "Users",
+          label: "User Management",
           icon: <Users className="w-5 h-5" />,
         },
         {
-          path: "/admin/patients",
-          label: "Patients",
-          icon: <ClipboardList className="w-5 h-5" />,
+          path: "/admin/doctors",
+          label: "Doctor Management",
+          icon: <Users className="w-5 h-5" />,
         },
         {
-          path: "/admin/doctors",
-          label: "Doctors",
-          icon: <UserCheck className="w-5 h-5" />,
+          path: "/admin/departments",
+          label: "Departments",
+          icon: <Box className="w-5 h-5" />,
         },
         {
           path: "/admin/specializations",
@@ -59,32 +61,59 @@ const Navbar = () => {
           icon: <UserCheck className="w-5 h-5" />,
         },
         {
-          path: "/admin/departments",
-          label: "Departments",
-          icon: <UserCheck className="w-5 h-5" />,
+          path: "/admin/schedules",
+          label: "Schedules",
+          icon: <Calendar className="w-5 h-5" />,
         },
         {
-          path: "/admin/register",
-          label: "Register User",
-          icon: <PlusCircle className="w-5 h-5 text-green-400" />,
-        }, // ✅ Added Register Button
+          path: "/admin/rooms",
+          label: "Rooms",
+          icon: <ClipboardList className="w-5 h-5" />,
+        },
+        
       ];
     } else if (role === "doctor" || role === "nurse") {
       return [
-        ...baseLinks,
+        ...commonLinks,
         {
-          path: "/patients",
+          path: "/",
+          label: "Dashboard",
+          icon: <LayoutDashboard className="w-5 h-5" />,
+        },
+        {
+          path: "/staff/appointments",
+          label: "Appointments",
+          icon: <Calendar className="w-5 h-5" />,
+        },
+        {
+          path: "/staff/patients",
           label: "Patients",
           icon: <ClipboardList className="w-5 h-5" />,
         },
         {
-          path: "/schedule",
-          label: "Schedule",
+          path: "/staff/medical-records",
+          label: "Medical Records",
+          icon: <FileText className="w-5 h-5" />,
+        },
+        {
+          path: "/staff/prescriptions",
+          label: "Prescriptions",
+          icon: <NotebookPen className="w-5 h-5" />,
+        },
+        {
+          path: "/staff/schedule",
+          label: "Work Schedule",
           icon: <Calendar className="w-5 h-5" />,
+        },
+        {
+          path: "/staff/room-assignments",
+          label: "Room Assignments",
+          icon: <Box className="w-5 h-5" />,
         },
       ];
     }
-    return baseLinks;
+
+    return commonLinks;
   };
 
   return (
@@ -106,14 +135,15 @@ const Navbar = () => {
         </div>
 
         <nav className="flex-1 p-4">
-          <ul className="space-y-4">
+          <ul className="space-y-6">
             {getNavigation().map((link, index) => (
               <li key={index}>
                 <Link
                   to={link.path}
-                  className="flex items-center p-2 hover:bg-gray-800 rounded"
+                  className="flex items-center p-3 rounded-md hover:bg-gray-800 transition-all"
                 >
-                  {link.icon} <span className="ml-3">{link.label}</span>
+                  {link.icon}
+                  <span className="ml-3 text-sm font-medium">{link.label}</span>
                 </Link>
               </li>
             ))}
@@ -123,9 +153,10 @@ const Navbar = () => {
         <div className="p-4 border-t border-gray-700">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center p-2 bg-red-600 rounded hover:bg-red-700"
+            className="w-full flex items-center justify-center p-3 bg-red-600 rounded-md hover:bg-red-700 transition-all"
           >
-            <LogOut className="w-5 h-5 mr-2" /> Logout
+            <LogOut className="w-5 h-5 mr-2" />
+            <span className="text-sm font-medium">Logout</span>
           </button>
         </div>
       </div>
