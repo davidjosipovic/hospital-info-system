@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   LogOut,
   LayoutDashboard,
@@ -24,7 +24,7 @@ const Navbar = () => {
   const getNavigation = () => {
     const baseLinks = [
       {
-        path: "/dashboard",
+        path: "/",
         label: "Dashboard",
         icon: <LayoutDashboard className="w-5 h-5" />,
       },

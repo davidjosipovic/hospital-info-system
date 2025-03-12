@@ -62,7 +62,6 @@ public class ServiceExtensionsTests
         provider.GetService<UserManager<User>>().Should().NotBeNull();
         provider.GetService<SignInManager<User>>().Should().NotBeNull();
         provider.GetService<RoleManager<IdentityRole>>().Should().NotBeNull();
-        provider.GetService<IDatabaseHealthChecker>().Should().NotBeNull();
     }
 
     [Fact]

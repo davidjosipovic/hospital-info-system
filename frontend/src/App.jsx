@@ -4,8 +4,8 @@ import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/admin/DashboardPage";
 import ProtectedRoleRoute from "./components/auth/ProtectedRoleRoute";
-import HomePage from "./pages/HomePage";
-import PatientsPage from "./pages/admin/PatientsPage";
+
+import PatientsPage from "./pages/staff/PatientsPage";
 import AppointmentsPage from "./pages/staff/AppointmentsPage";
 import Navbar from "./components/ui/Navbar";
 import AuthGuard from "./components/auth/AuthGuard";
@@ -13,6 +13,7 @@ import DoctorsPage from "./pages/admin/DoctorsPage";
 import DepartmentsPage from "./pages/admin/DepartmentsPage";
 import SpecializationsPage from "./pages/admin/SpecializationsPage";
 import UsersPage from "./pages/admin/UsersPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   const { token, role } = useSelector((state) => state.auth);
@@ -30,8 +31,8 @@ function App() {
           element={
             <AuthGuard>
               <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/" element={<DashboardPage />} />
+                <Route path="*" element={<NotFoundPage/>}/>
 
                 <Route
                   path="/admin/register"

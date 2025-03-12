@@ -8,7 +8,7 @@ public static class ServiceExtensions
 {
     public static void ConfigureDatabaseAndIdentity(this IServiceCollection services)
     {
-        // ✅ Read Database Credentials from .env
+      
         var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
         var dbPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
         var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "HospitalDB";
@@ -17,12 +17,10 @@ public static class ServiceExtensions
 
         var connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}";
 
-        // ✅ Configure PostgreSQL Database
+    
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
 
-        // ✅ Add a simple Health Check service
-        services.AddSingleton<IDatabaseHealthChecker>(new DatabaseHealthChecker(connectionString));
 
         services.AddIdentity<User, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
