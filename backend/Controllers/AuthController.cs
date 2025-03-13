@@ -21,37 +21,36 @@ public class AuthController : ControllerBase
         _configuration = configuration;
     }
 
-    // ✅ Register User
     [HttpPost("register")]
-public async Task<IActionResult> Register([FromBody] RegisterDto model)
-{
-    if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
-        return BadRequest("Email and Password are required.");
-
-    if (!Enum.TryParse<UserRole>(model.Role, true, out var roleEnum)) 
-        return BadRequest("Invalid role. Allowed values: 'admin', 'doctor', 'nurse'.");
-
-    var existingUser = await _userManager.FindByEmailAsync(model.Email ?? string.Empty);
-    if (existingUser != null)
-        return BadRequest("User already exists.");
-
-    var user = new User
+    public async Task<IActionResult> Register([FromBody] RegisterDto model)
     {
-        UserName = model.Email,
-        Email = model.Email,
-        FirstName = model.FirstName ?? "N/A",
-        LastName = model.LastName ?? "N/A",
-        Role = roleEnum.ToString().ToLower() // ✅ Converts enum to lowercase (admin, doctor, nurse)
-    };
+        if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
+            return BadRequest("Email and Password are required.");
 
-    var result = await _userManager.CreateAsync(user, model.Password ?? string.Empty);
-    if (!result.Succeeded)
-        return BadRequest(result.Errors);
+        if (!Enum.TryParse<UserRole>(model.Role, true, out var roleEnum))
+            return BadRequest("Invalid role. Allowed values: 'admin', 'doctor', 'nurse'.");
 
-    return Ok("User registered successfully.");
-}
+        var existingUser = await _userManager.FindByEmailAsync(model.Email ?? string.Empty);
+        if (existingUser != null)
+            return BadRequest("User already exists.");
 
-    // ✅ Login User & Generate JWT
+        var user = new User
+        {
+            UserName = model.Email,
+            Email = model.Email,
+            FirstName = model.FirstName ?? "N/A",
+            LastName = model.LastName ?? "N/A",
+            Role = roleEnum.ToString().ToLower()
+        };
+
+        var result = await _userManager.CreateAsync(user, model.Password ?? string.Empty);
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        return Ok("User registered successfully.");
+    }
+
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto model)
     {
@@ -64,40 +63,40 @@ public async Task<IActionResult> Register([FromBody] RegisterDto model)
     }
 
     private string GenerateJwtToken(User user)
-{
-    var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET");
-
-    if (string.IsNullOrEmpty(jwtSecret))
     {
-        throw new Exception("❌ JWT_SECRET is missing or empty in GenerateJwtToken!");
-    }
+        var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET");
 
-    var keyBytes = Encoding.UTF8.GetBytes(jwtSecret);
-    
-    if (keyBytes.Length < 16)
-    {
-        throw new Exception($"❌ JWT_SECRET is too short! It must be at least 16 bytes (current: {keyBytes.Length} bytes)");
-    }
+        if (string.IsNullOrEmpty(jwtSecret))
+        {
+            throw new Exception("❌ JWT_SECRET is missing or empty in GenerateJwtToken!");
+        }
 
-    var key = new SymmetricSecurityKey(keyBytes);
-    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var keyBytes = Encoding.UTF8.GetBytes(jwtSecret);
 
-    var claims = new List<Claim>
+        if (keyBytes.Length < 16)
+        {
+            throw new Exception($"❌ JWT_SECRET is too short! It must be at least 16 bytes (current: {keyBytes.Length} bytes)");
+        }
+
+        var key = new SymmetricSecurityKey(keyBytes);
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var claims = new List<Claim>
     {
         new Claim(JwtRegisteredClaimNames.Sub, user.Id ?? ""),
         new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
         new Claim(ClaimTypes.Role, user.Role ?? "User")
     };
 
-    var token = new JwtSecurityToken(
-        issuer: Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "your_app",
-        audience: Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "your_users",
-        claims: claims,
-        expires: DateTime.UtcNow.AddHours(2),
-        signingCredentials: credentials
-    );
+        var token = new JwtSecurityToken(
+            issuer: Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "your_app",
+            audience: Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "your_users",
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(2),
+            signingCredentials: credentials
+        );
 
-    return new JwtSecurityTokenHandler().WriteToken(token);
-}
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
 
 }
