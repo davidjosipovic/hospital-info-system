@@ -71,6 +71,16 @@ const ScheduleCalendar = ({
     }));
   };
 
+  // Helper function to get the hours between startTime and endTime
+  const getHighlightedHours = () => {
+    if (startTime !== null && endTime !== null && endTime > startTime) {
+      return [...Array(endTime - startTime)].map((_, i) => startTime + i);
+    }
+    return [];
+  };
+
+  const highlightedHours = getHighlightedHours();
+
   return (
     <div className="mt-4">
       <h2 className="text-lg font-bold">Schedule Management</h2>
@@ -118,7 +128,7 @@ const ScheduleCalendar = ({
             <button
               key={index}
               onClick={() => handleTimeSelection(index)}
-              className={`border p-2 hover:bg-green-200 ${startTime === index || endTime === index ? "bg-green-400" : ""} ${selectedDateSchedules.some(schedule => index >= parseInt(schedule.startTime.split(":")[0]) && index < parseInt(schedule.endTime.split(":")[0])) ? "bg-red-400" : ""}`}
+              className={`border p-2 hover:bg-green-200 ${startTime === index || endTime === index ? "bg-green-400" : ""} ${highlightedHours.includes(index) ? "bg-green-300" : ""} ${selectedDateSchedules.some(schedule => index >= parseInt(schedule.startTime.split(":")[0]) && index < parseInt(schedule.endTime.split(":")[0])) ? "bg-red-400" : ""}`}
             >
               {index}:00
             </button>
