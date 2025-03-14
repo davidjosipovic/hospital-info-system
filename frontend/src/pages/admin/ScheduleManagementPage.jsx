@@ -1,66 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchSchedules, addSchedule, editSchedule, removeSchedule } from '../../features/scheduleManagement/scheduleSlice';
-import ScheduleForm from '../../features/scheduleManagement/components/ScheduleForm';
-import ScheduleTable from '../../features/scheduleManagement/components/ScheduleTable';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addSchedule } from "../../features/scheduleManagement/scheduleSlice";
+import UserSelect from "../../features/scheduleManagement/components/UserSelect";
+import ScheduleCalendar from "../../features/scheduleManagement/components/ScheduleCalendar";
+import SaveScheduleButton from "../../features/scheduleManagement/components/SaveScheduleButton";
 
 const ScheduleManagementPage = () => {
   const dispatch = useDispatch();
-  const { schedules, status, error } = useSelector((state) => state.schedules);
-  const [newSchedule, setNewSchedule] = useState({
-    userId: '',
-    workDate: '',
-    startTime: '',
-    endTime: '',
-    status: 'working',
-  });
-  const [editScheduleData, setEditScheduleData] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null); // Null instead of empty string
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
-  useEffect(() => {
-    dispatch(fetchSchedules());
-  }, [dispatch]);
+  const handleSave = () => {
+    if (!selectedUser || !selectedDate || !startTime || !endTime) {
+      alert("Please select a user, date, start time, and end time.");
+      return;
+    }
 
-  const handleAddSchedule = (e) => {
-    e.preventDefault();
-    dispatch(addSchedule(newSchedule));
-    setNewSchedule({ userId: '', workDate: '', startTime: '', endTime: '', status: 'working' });
+    const scheduleData = {
+      userId: selectedUser.id,
+      workDate: new Date(selectedDate).toISOString(), // Ensure UTC format
+      startTime: `${startTime}:00`,
+      endTime: `${endTime}:00`,
+      status: "working",
+    };
+    
+    console.log("Schedule Data:", scheduleData); // Log the schedule data
+
+
+    dispatch(addSchedule(scheduleData));
+
+    // Reset selections
+    setSelectedUser(null);
+    setSelectedDate(null);
+    setStartTime(null);
+    setEndTime(null);
   };
-
-  const handleUpdateSchedule = (e) => {
-    e.preventDefault();
-    dispatch(editSchedule({ id: editScheduleData.id, scheduleData: editScheduleData }));
-    setIsEditing(false);
-    setEditScheduleData(null);
-  };
-
-  const handleDeleteSchedule = (id) => {
-    dispatch(removeSchedule(id));
-  };
-
-  const handleEditSchedule = (schedule) => {
-    setIsEditing(true);
-    setEditScheduleData({ ...schedule });
-  };
-
-  if (status === 'loading') return <div>Loading...</div>;
-  if (status === 'failed') return <div>Error: {error}</div>;
 
   return (
-    <div className="mx-80">
-      <h1 className=''>Schedule management</h1>
-      <ScheduleForm
-        isEditing={isEditing}
-        scheduleData={isEditing ? editScheduleData : newSchedule}
-        onSubmit={isEditing ? handleUpdateSchedule : handleAddSchedule}
-        onChange={isEditing ? setEditScheduleData : setNewSchedule}
+    <div className="p-4 mx-auto max-w-lg border rounded">
+      <UserSelect onSelectUser={setSelectedUser} />
+      <ScheduleCalendar
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        startTime={startTime}
+        setStartTime={setStartTime}
+        endTime={endTime}
+        setEndTime={setEndTime}
+        selectedUser={selectedUser}
       />
-
-      <ScheduleTable
-        schedules={schedules}
-        onEdit={handleEditSchedule}
-        onDelete={handleDeleteSchedule}
-      />
+      <SaveScheduleButton onSave={handleSave} />
     </div>
   );
 };
