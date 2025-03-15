@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "../../../features/users/usersSlice"; // Import your fetchUsers action
+import { fetchUsers } from "../../../features/users/usersSlice"; 
 
 const UserSelect = ({ onSelectUser }) => {
   const dispatch = useDispatch();
   const { users = [], loading, error } = useSelector((state) => state.users || { users: [] });
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // Fetch users when the component mounts
+
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  // Handle user selection
+
   const handleSelectUser = (e) => {
     const userId = e.target.value;
     const user = users.find((user) => user.id === userId);
-    setSelectedUser(user); // Update selected user
-    onSelectUser(user); // Call the parent function to pass the selected user
+    setSelectedUser(user); 
+    onSelectUser(user); 
   };
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-xl font-bold mb-4">Select a User</h1>
 
-      {/* Dropdown for selecting users */}
+      
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {!loading && !error && (
@@ -42,7 +42,7 @@ const UserSelect = ({ onSelectUser }) => {
         </select>
       )}
 
-      {/* Display the selected user */}
+  
       {selectedUser && (
         <div className="mt-4">
           <p className="font-semibold">Selected User:</p>

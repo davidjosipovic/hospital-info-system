@@ -7,7 +7,7 @@ import SaveScheduleButton from "../../features/scheduleManagement/components/Sav
 
 const ScheduleManagementPage = () => {
   const dispatch = useDispatch();
-  const [selectedUser, setSelectedUser] = useState(null); // Null instead of empty string
+  const [selectedUser, setSelectedUser] = useState(null); 
   const [selectedDate, setSelectedDate] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
@@ -20,18 +20,18 @@ const ScheduleManagementPage = () => {
 
     const scheduleData = {
       userId: selectedUser.id,
-      workDate: new Date(selectedDate).toISOString(), // Ensure UTC format
+      workDate: new Date(selectedDate).toISOString(),
       startTime: `${startTime}:00`,
       endTime: `${endTime}:00`,
       status: "working",
     };
     
-    console.log("Schedule Data:", scheduleData); // Log the schedule data
+    console.log("Schedule Data:", scheduleData); 
 
 
     dispatch(addSchedule(scheduleData));
 
-    // Reset selections
+   
     setSelectedUser(null);
     setSelectedDate(null);
     setStartTime(null);
