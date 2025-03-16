@@ -10,8 +10,8 @@ export const addSchedule = createAsyncThunk('schedules/addSchedule', async (sche
   return await scheduleApi.createSchedule(scheduleData);
 });
 
-export const editSchedule = createAsyncThunk('schedules/editSchedule', async ({ id, scheduleData }) => {
-  return await scheduleApi.updateSchedule(id, scheduleData);
+export const updateSchedule = createAsyncThunk('schedules/updateSchedule', async ({ id, scheduleData }) => {
+  return await scheduleApi.updateSchedule(id, scheduleData);  // Ensure the API returns the updated data
 });
 
 export const removeSchedule = createAsyncThunk('schedules/removeSchedule', async (id) => {
@@ -44,12 +44,24 @@ const scheduleSlice = createSlice({
       .addCase(addSchedule.fulfilled, (state, action) => {
         state.schedules.push(action.payload);
       })
-      .addCase(editSchedule.fulfilled, (state, action) => {
-        const index = state.schedules.findIndex((schedule) => schedule.id === action.payload.id);
+      .addCase(updateSchedule.fulfilled, (state, action) => {
+        const updatedSchedule = action.payload;  // The API returns the full updated schedule object
+        
+        console.log("Update payload:", action.payload);  // Log the payload here to inspect it
+        console.log("Updated Schedule Data:", updatedSchedule);  // Log the schedule data
+      
+        
+      
+        // Find the schedule and update it
+        const index = state.schedules.findIndex((schedule) => schedule.id === updatedSchedule.id);
+      
         if (index !== -1) {
-          state.schedules[index] = action.payload;
+          state.schedules[index] = updatedSchedule;  // Replace the schedule in the state
+        } else {
+          console.error("Schedule not found for update:", updatedSchedule);
         }
       })
+      
       .addCase(removeSchedule.fulfilled, (state, action) => {
         state.schedules = state.schedules.filter((schedule) => schedule.id !== action.payload);
       });

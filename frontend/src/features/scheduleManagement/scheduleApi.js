@@ -24,16 +24,30 @@ export const createSchedule = async (scheduleData) => {
   }
 };
 
-// Update a work schedule by ID
-export const updateSchedule = async (id, scheduleData) => {
+export const updateSchedule = async (scheduleId, data) => {
   try {
-    const response = await api.put(`${API_URL}/${id}`, scheduleData);
-    return response.data;
+    console.log("Updating schedule with ID:", scheduleId);
+    console.log("Data being sent:", data);
+
+    
+    const response = await api.put(`${API_URL}/${scheduleId}`, data); // Correct URL for update
+
+    if (response.status === 204) {
+      console.log("Schedule updated successfully, no data returned");
+      return { success: true }; // Indicate success without returning data
+    }
+
+    console.log("Schedule updated:", response.data);
+    return response.data;  // This would be for cases where data is returned
   } catch (error) {
     console.error("Error updating schedule:", error);
-    throw error;
+    if (error.response) {
+      console.error("Response from server:", error.response.data);
+    }
+    throw error;  // Ensure we throw the error if something goes wrong
   }
 };
+
 
 // Delete a work schedule by ID
 export const deleteSchedule = async (id) => {

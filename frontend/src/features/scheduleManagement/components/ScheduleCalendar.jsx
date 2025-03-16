@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSchedules } from "../scheduleSlice"; //
+import { fetchSchedules, updateSchedule, addSchedule } from "../scheduleSlice";
 
 const ScheduleCalendar = ({
   selectedDate,
@@ -21,28 +21,24 @@ const ScheduleCalendar = ({
     }
   }, [dispatch, status]);
 
-  const getDaysInMonth = (month, year) => {
-    const date = new Date(year, month + 1, 0);
-    return date.getDate();
-  };
+  const getDaysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
 
   const handleDateClick = (day) => {
-    const date = `${currentYear}-${String(currentMonth + 1).padStart(
-      2,
-      "0"
-    )}-${String(day).padStart(2, "0")}`;
+    const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     setSelectedDate(date);
     setStartTime(null);
     setEndTime(null);
   };
 
   const handleTimeSelection = (time) => {
-    if (!startTime) {
+    if (startTime === null) {
       setStartTime(time);
-    } else if (!endTime && time > startTime) {
+    } else if (endTime === null && time > startTime) {
       setEndTime(time);
     }
   };
+
+  
 
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
@@ -53,28 +49,22 @@ const ScheduleCalendar = ({
     : [];
 
   const selectedDateSchedules = selectedDate
-    ? userSchedules.filter(
-        (schedule) => schedule.workDate.split("T")[0] === selectedDate
-      )
+    ? userSchedules.filter((schedule) => schedule.workDate.split("T")[0] === selectedDate)
     : [];
 
   const getOccupiedHours = (day) => {
-    const date = `${currentYear}-${String(currentMonth + 1).padStart(
-      2,
-      "0"
-    )}-${String(day).padStart(2, "0")}`;
-    const schedulesForDay = userSchedules.filter(
-      (schedule) => schedule.workDate.split("T")[0] === date
-    );
-    return schedulesForDay.map((schedule) => ({
-      start: parseInt(schedule.startTime.split(":")[0]),
-      end: parseInt(schedule.endTime.split(":")[0]),
-    }));
+    const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return userSchedules
+      .filter((schedule) => schedule.workDate.split("T")[0] === date)
+      .map((schedule) => ({
+        start: parseInt(schedule.startTime.split(":")[0]),
+        end: parseInt(schedule.endTime.split(":")[0]),
+      }));
   };
 
   const getHighlightedHours = () => {
     if (startTime !== null && endTime !== null && endTime > startTime) {
-      return [...Array(endTime - startTime)].map((_, i) => startTime + i);
+      return Array.from({ length: endTime - startTime }, (_, i) => startTime + i);
     }
     return [];
   };
@@ -86,13 +76,9 @@ const ScheduleCalendar = ({
       <h2 className="text-lg font-bold">Schedule Management</h2>
 
       <div className="grid grid-cols-7 gap-2 mt-2">
-        {[...Array(daysInMonth)].map((_, index) => {
+        {Array.from({ length: daysInMonth }, (_, index) => {
           const day = index + 1;
-          const date = `${currentYear}-${String(currentMonth + 1).padStart(
-            2,
-            "0"
-          )}-${String(day).padStart(2, "0")}`;
-
+          const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
           const occupiedHours = getOccupiedHours(day);
 
           return (
@@ -111,9 +97,7 @@ const ScheduleCalendar = ({
 
       {selectedDate && selectedDateSchedules.length > 0 && (
         <div className="mt-4">
-          <h3 className="text-lg font-semibold">
-            Zauzeti Sati za {selectedDate}:
-          </h3>
+          <h3 className="text-lg font-semibold">Occupied Hours for {selectedDate}:</h3>
           <ul className="list-disc pl-5">
             {selectedDateSchedules.map((schedule, index) => (
               <li key={index} className="text-sm">
@@ -127,7 +111,7 @@ const ScheduleCalendar = ({
       <div className="mt-4">
         <p>Select Time Range:</p>
         <div className="grid grid-cols-6 gap-2 mt-2">
-          {[...Array(24)].map((_, index) => (
+          {Array.from({ length: 24 }, (_, index) => (
             <button
               key={index}
               onClick={() => handleTimeSelection(index)}
