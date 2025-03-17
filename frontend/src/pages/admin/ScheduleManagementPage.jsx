@@ -36,7 +36,7 @@ const ScheduleManagementPage = () => {
     };
 
     if (existingSchedule) {
-      // Create the updated schedule data
+      
       const updatedScheduleData = {
         id: existingSchedule.id,
         userId: selectedUser.id,
@@ -48,13 +48,13 @@ const ScheduleManagementPage = () => {
     
       console.log(updatedScheduleData);
     
-      // Dispatch update action with the correct structure
+     
       dispatch(updateSchedule({ id: existingSchedule.id, scheduleData: updatedScheduleData }));
     } else {
-      dispatch(addSchedule(scheduleData));  // Add a new schedule if no existing one found
+      dispatch(addSchedule(scheduleData));  
     }
 
-    // Clear the form after saving
+    
     setSelectedUser(null);
     setSelectedDate(null);
     setStartTime(null);

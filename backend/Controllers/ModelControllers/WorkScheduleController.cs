@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize] // ✅ Requires authentication
+[Authorize] 
 public class WorkSchedulesController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -14,7 +14,7 @@ public class WorkSchedulesController : ControllerBase
         _context = context;
     }
 
-    // GET: api/workschedules
+    
     [HttpGet]
     public async Task<ActionResult<IEnumerable<WorkSchedule>>> GetWorkSchedules()
     {
@@ -23,7 +23,7 @@ public class WorkSchedulesController : ControllerBase
             .ToListAsync();
     }
 
-    // GET: api/workschedules/{id}
+   
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkSchedule>> GetWorkSchedule(Guid id)
     {
@@ -39,11 +39,11 @@ public class WorkSchedulesController : ControllerBase
         return workSchedule;
     }
 
-    // POST: api/workschedules
+    
     [HttpPost]
     public async Task<ActionResult<WorkSchedule>> CreateWorkSchedule(WorkSchedule workSchedule)
     {
-        // Validate foreign key (UserId)
+        
         if (!_context.Users.Any(u => u.Id == workSchedule.UserId))
         {
             return BadRequest("Invalid UserId.");
@@ -55,7 +55,7 @@ public class WorkSchedulesController : ControllerBase
         return CreatedAtAction(nameof(GetWorkSchedule), new { id = workSchedule.Id }, workSchedule);
     }
 
-    // PUT: api/workschedules/{id}
+    
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateWorkSchedule(Guid id, WorkSchedule workSchedule)
     {
@@ -64,7 +64,7 @@ public class WorkSchedulesController : ControllerBase
             return BadRequest();
         }
 
-        // Validate foreign key (UserId)
+       
         if (!_context.Users.Any(u => u.Id == workSchedule.UserId))
         {
             return BadRequest("Invalid UserId.");
@@ -91,7 +91,7 @@ public class WorkSchedulesController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/workschedules/{id}
+    
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteWorkSchedule(Guid id)
     {
