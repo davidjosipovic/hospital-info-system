@@ -5,6 +5,7 @@ import UserSelect from "../../features/scheduleManagement/components/UserSelect"
 import ScheduleCalendar from "../../features/scheduleManagement/components/ScheduleCalendar";
 import SaveScheduleButton from "../../features/scheduleManagement/components/SaveScheduleButton";
 import { useSelector } from "react-redux";
+import { fetchSchedules } from "../../features/scheduleManagement/scheduleSlice"
 
 const ScheduleManagementPage = () => {
   const dispatch = useDispatch();
@@ -53,10 +54,11 @@ const ScheduleManagementPage = () => {
     } else {
       dispatch(addSchedule(scheduleData));  
     }
+    dispatch(fetchSchedules());
+
 
     
-    setSelectedUser(null);
-    setSelectedDate(null);
+    
     setStartTime(null);
     setEndTime(null);
   };

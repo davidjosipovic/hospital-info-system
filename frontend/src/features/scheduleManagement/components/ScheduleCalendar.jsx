@@ -14,6 +14,7 @@ const ScheduleCalendar = ({
   const dispatch = useDispatch();
   const schedules = useSelector((state) => state.schedules.schedules);
   const status = useSelector((state) => state.schedules.status);
+  const [selectedHour, setSelectedHour] = useState(null); // ✅ Track clicked hour
 
   useEffect(() => {
     if (status === "idle") {
@@ -21,28 +22,9 @@ const ScheduleCalendar = ({
     }
   }, [dispatch, status]);
 
-  const getDaysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
-
-  const handleDateClick = (day) => {
-    const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-    setSelectedDate(date);
-    setStartTime(null);
-    setEndTime(null);
-  };
-
-  const handleTimeSelection = (time) => {
-    if (startTime === null) {
-      setStartTime(time);
-    } else if (endTime === null && time > startTime) {
-      setEndTime(time);
-    }
-  };
-
-  
-
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
-  const daysInMonth = getDaysInMonth(currentMonth, currentYear);
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
   const userSchedules = selectedUser
     ? schedules.filter((schedule) => schedule.userId === selectedUser.id)
@@ -51,6 +33,26 @@ const ScheduleCalendar = ({
   const selectedDateSchedules = selectedDate
     ? userSchedules.filter((schedule) => schedule.workDate.split("T")[0] === selectedDate)
     : [];
+
+  const handleDateClick = (day) => {
+    const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    setSelectedDate(date);
+    setStartTime(null);
+    setEndTime(null);
+    setSelectedHour(null); // ✅ Reset hour selection when date changes
+  };
+
+  const handleTimeSelection = (time) => {
+    setSelectedHour(time); // ✅ Store the clicked hour
+    if (startTime === null) {
+      setStartTime(time);
+    } else if (endTime === null && time > startTime) {
+      setEndTime(time);
+    } else {
+      setStartTime(time);
+      setEndTime(null);
+    }
+  };
 
   const getOccupiedHours = (day) => {
     const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
@@ -75,6 +77,7 @@ const ScheduleCalendar = ({
     <div className="mt-4">
       <h2 className="text-lg font-bold">Schedule Management</h2>
 
+      {/* Calendar */}
       <div className="grid grid-cols-7 gap-2 mt-2">
         {Array.from({ length: daysInMonth }, (_, index) => {
           const day = index + 1;
@@ -95,6 +98,7 @@ const ScheduleCalendar = ({
         })}
       </div>
 
+      {/* Display occupied hours */}
       {selectedDate && selectedDateSchedules.length > 0 && (
         <div className="mt-4">
           <h3 className="text-lg font-semibold">Occupied Hours for {selectedDate}:</h3>
@@ -108,28 +112,31 @@ const ScheduleCalendar = ({
         </div>
       )}
 
+      {/* Select Time Range */}
       <div className="mt-4">
         <p>Select Time Range:</p>
         <div className="grid grid-cols-6 gap-2 mt-2">
-          {Array.from({ length: 24 }, (_, index) => (
-            <button
-              key={index}
-              onClick={() => handleTimeSelection(index)}
-              className={`border p-2 hover:bg-green-200 ${
-                startTime === index || endTime === index ? "bg-green-400" : ""
-              } ${highlightedHours.includes(index) ? "bg-green-300" : ""} ${
-                selectedDateSchedules.some(
-                  (schedule) =>
-                    index >= parseInt(schedule.startTime.split(":")[0]) &&
-                    index < parseInt(schedule.endTime.split(":")[0])
-                )
-                  ? "bg-red-400"
-                  : ""
-              }`}
-            >
-              {index}:00
-            </button>
-          ))}
+          {Array.from({ length: 24 }, (_, index) => {
+            const isOccupied = selectedDateSchedules.some(
+              (schedule) =>
+                index >= parseInt(schedule.startTime.split(":")[0]) &&
+                index < parseInt(schedule.endTime.split(":")[0])
+            );
+
+            return (
+              <button
+                key={index}
+                onClick={() => handleTimeSelection(index)}
+                className={`border p-2 hover:bg-green-200 
+                    ${selectedHour === index ? "bg-green-400" : ""} 
+    ${startTime === index || endTime === index ? "bg-green-400" : ""} 
+    ${highlightedHours.includes(index) ? "bg-green-300" : ""} 
+    ${isOccupied && !(selectedHour === index || startTime === index || endTime === index || highlightedHours.includes(index)) ? "bg-red-400" : ""}`}
+              >
+                {index}:00
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

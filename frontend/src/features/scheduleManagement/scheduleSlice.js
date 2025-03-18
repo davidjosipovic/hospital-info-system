@@ -46,13 +46,7 @@ const scheduleSlice = createSlice({
       })
       .addCase(updateSchedule.fulfilled, (state, action) => {
         const updatedSchedule = action.payload;  
-        
-        console.log("Update payload:", action.payload);  
-        console.log("Updated Schedule Data:", updatedSchedule);  
       
-        
-      
-       
         const index = state.schedules.findIndex((schedule) => schedule.id === updatedSchedule.id);
       
         if (index !== -1) {
