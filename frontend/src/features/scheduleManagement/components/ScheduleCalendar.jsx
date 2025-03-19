@@ -15,6 +15,8 @@ const ScheduleCalendar = ({
   const schedules = useSelector((state) => state.schedules.schedules);
   const status = useSelector((state) => state.schedules.status);
   const [selectedHour, setSelectedHour] = useState(null);
+  const [month, setMonth] = useState(new Date().getMonth());
+const [year, setYear] = useState(new Date().getFullYear());
 
   useEffect(() => {
     if (status === "idle") {
@@ -25,6 +27,17 @@ const ScheduleCalendar = ({
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+  const prevMonth = () => {
+    setMonth((prev) => (prev === 0 ? 11 : prev - 1));
+    if (month === 0) setYear((prev) => prev - 1);
+  };
+  
+  const nextMonth = () => {
+    setMonth((prev) => (prev === 11 ? 0 : prev + 1));
+    if (month === 11) setYear((prev) => prev + 1);
+  };
+
 
   const userSchedules = selectedUser
     ? schedules.filter((schedule) => schedule.userId === selectedUser.id)
@@ -87,15 +100,17 @@ const ScheduleCalendar = ({
   return (
     <div className="mt-4">
       <h2 className="text-lg font-bold">Schedule Management</h2>
-
-      {/* Calendar */}
+      <div className="flex justify-between items-center mt-2">
+        <button onClick={prevMonth} className="p-2 bg-gray-200 rounded">←</button>
+        <h3 className="text-lg font-semibold">
+          {new Date(year, month).toLocaleString("default", { month: "long" })} {year}
+        </h3>
+        <button onClick={nextMonth} className="p-2 bg-gray-200 rounded">→</button>
+      </div>
       <div className="grid grid-cols-7 gap-2 mt-2">
         {Array.from({ length: daysInMonth }, (_, index) => {
           const day = index + 1;
-          const date = `${currentYear}-${String(currentMonth + 1).padStart(
-            2,
-            "0"
-          )}-${String(day).padStart(2, "0")}`;
+          const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
           const occupiedHours = getOccupiedHours(day);
 
           return (
@@ -112,17 +127,17 @@ const ScheduleCalendar = ({
         })}
       </div>
 
-      {selectedDate && selectedDateSchedules.length > 0 && (
+      {selectedDate && (
         <div className="mt-4">
-          <h3 className="text-lg font-semibold">
-            Occupied Hours for {selectedDate}:
-          </h3>
+          <h3 className="text-lg font-semibold">Occupied Hours for {selectedDate}:</h3>
           <ul className="list-disc pl-5">
-            {selectedDateSchedules.map((schedule, index) => (
-              <li key={index} className="text-sm">
-                {schedule.startTime} - {schedule.endTime}
-              </li>
-            ))}
+            {userSchedules
+              .filter((schedule) => schedule.workDate.split("T")[0] === selectedDate)
+              .map((schedule, index) => (
+                <li key={index} className="text-sm">
+                  {schedule.startTime} - {schedule.endTime}
+                </li>
+              ))}
           </ul>
         </div>
       )}
@@ -131,8 +146,9 @@ const ScheduleCalendar = ({
         <p>Select Time Range:</p>
         <div className="grid grid-cols-6 gap-2 mt-2">
           {Array.from({ length: 24 }, (_, index) => {
-            const isOccupied = selectedDateSchedules.some(
+            const isOccupied = userSchedules.some(
               (schedule) =>
+                selectedDate === schedule.workDate.split("T")[0] &&
                 index >= parseInt(schedule.startTime.split(":")[0]) &&
                 index < parseInt(schedule.endTime.split(":")[0])
             );
@@ -145,17 +161,7 @@ const ScheduleCalendar = ({
                     ${selectedHour === index ? "bg-green-400" : ""} 
     ${startTime === index || endTime === index ? "bg-green-400" : ""} 
     ${highlightedHours.includes(index) ? "bg-green-300" : ""} 
-    ${
-      isOccupied &&
-      !(
-        selectedHour === index ||
-        startTime === index ||
-        endTime === index ||
-        highlightedHours.includes(index)
-      )
-        ? "bg-red-400"
-        : ""
-    }`}
+    ${isOccupied ? "bg-red-400" : ""}`}
               >
                 {index}:00
               </button>
@@ -166,5 +172,6 @@ const ScheduleCalendar = ({
     </div>
   );
 };
+
 
 export default ScheduleCalendar;
