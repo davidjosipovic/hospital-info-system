@@ -14,7 +14,7 @@ const ScheduleCalendar = ({
   const dispatch = useDispatch();
   const schedules = useSelector((state) => state.schedules.schedules);
   const status = useSelector((state) => state.schedules.status);
-  const [selectedHour, setSelectedHour] = useState(null); // ✅ Track clicked hour
+  const [selectedHour, setSelectedHour] = useState(null);
 
   useEffect(() => {
     if (status === "idle") {
@@ -31,19 +31,24 @@ const ScheduleCalendar = ({
     : [];
 
   const selectedDateSchedules = selectedDate
-    ? userSchedules.filter((schedule) => schedule.workDate.split("T")[0] === selectedDate)
+    ? userSchedules.filter(
+        (schedule) => schedule.workDate.split("T")[0] === selectedDate
+      )
     : [];
 
   const handleDateClick = (day) => {
-    const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const date = `${currentYear}-${String(currentMonth + 1).padStart(
+      2,
+      "0"
+    )}-${String(day).padStart(2, "0")}`;
     setSelectedDate(date);
     setStartTime(null);
     setEndTime(null);
-    setSelectedHour(null); // ✅ Reset hour selection when date changes
+    setSelectedHour(null);
   };
 
   const handleTimeSelection = (time) => {
-    setSelectedHour(time); // ✅ Store the clicked hour
+    setSelectedHour(time);
     if (startTime === null) {
       setStartTime(time);
     } else if (endTime === null && time > startTime) {
@@ -55,7 +60,10 @@ const ScheduleCalendar = ({
   };
 
   const getOccupiedHours = (day) => {
-    const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const date = `${currentYear}-${String(currentMonth + 1).padStart(
+      2,
+      "0"
+    )}-${String(day).padStart(2, "0")}`;
     return userSchedules
       .filter((schedule) => schedule.workDate.split("T")[0] === date)
       .map((schedule) => ({
@@ -66,7 +74,10 @@ const ScheduleCalendar = ({
 
   const getHighlightedHours = () => {
     if (startTime !== null && endTime !== null && endTime > startTime) {
-      return Array.from({ length: endTime - startTime }, (_, i) => startTime + i);
+      return Array.from(
+        { length: endTime - startTime },
+        (_, i) => startTime + i
+      );
     }
     return [];
   };
@@ -81,7 +92,10 @@ const ScheduleCalendar = ({
       <div className="grid grid-cols-7 gap-2 mt-2">
         {Array.from({ length: daysInMonth }, (_, index) => {
           const day = index + 1;
-          const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+          const date = `${currentYear}-${String(currentMonth + 1).padStart(
+            2,
+            "0"
+          )}-${String(day).padStart(2, "0")}`;
           const occupiedHours = getOccupiedHours(day);
 
           return (
@@ -98,10 +112,11 @@ const ScheduleCalendar = ({
         })}
       </div>
 
-      {/* Display occupied hours */}
       {selectedDate && selectedDateSchedules.length > 0 && (
         <div className="mt-4">
-          <h3 className="text-lg font-semibold">Occupied Hours for {selectedDate}:</h3>
+          <h3 className="text-lg font-semibold">
+            Occupied Hours for {selectedDate}:
+          </h3>
           <ul className="list-disc pl-5">
             {selectedDateSchedules.map((schedule, index) => (
               <li key={index} className="text-sm">
@@ -112,7 +127,6 @@ const ScheduleCalendar = ({
         </div>
       )}
 
-      {/* Select Time Range */}
       <div className="mt-4">
         <p>Select Time Range:</p>
         <div className="grid grid-cols-6 gap-2 mt-2">
@@ -131,7 +145,17 @@ const ScheduleCalendar = ({
                     ${selectedHour === index ? "bg-green-400" : ""} 
     ${startTime === index || endTime === index ? "bg-green-400" : ""} 
     ${highlightedHours.includes(index) ? "bg-green-300" : ""} 
-    ${isOccupied && !(selectedHour === index || startTime === index || endTime === index || highlightedHours.includes(index)) ? "bg-red-400" : ""}`}
+    ${
+      isOccupied &&
+      !(
+        selectedHour === index ||
+        startTime === index ||
+        endTime === index ||
+        highlightedHours.includes(index)
+      )
+        ? "bg-red-400"
+        : ""
+    }`}
               >
                 {index}:00
               </button>
