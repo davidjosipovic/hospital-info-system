@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchDepartments,
@@ -6,16 +6,12 @@ import {
   editDepartment,
   removeDepartment,
 } from "../../features/departments/departmentsSlice";
-import Button from "../../components/ui/Button";
-import Input from "../../components/ui/Input";
+import DepartmentForm from "../../features/departments/components/DepartmentForm";
+import DepartmentItem from "../../features/departments/components/DepartmentItem";
 
 const DepartmentsPage = () => {
   const dispatch = useDispatch();
-  const {
-    list: departments,
-    loading,
-    error,
-  } = useSelector((state) => state.departments);
+  const { list: departments, loading, error } = useSelector((state) => state.departments);
 
   const [newDepartment, setNewDepartment] = useState("");
   const [editingDepartment, setEditingDepartment] = useState(null);
@@ -41,12 +37,7 @@ const DepartmentsPage = () => {
   const handleUpdateDepartment = (e) => {
     e.preventDefault();
     if (updatedName.trim()) {
-      dispatch(
-        editDepartment({
-          id: editingDepartment.id,
-          data: { name: updatedName },
-        })
-      );
+      dispatch(editDepartment({ id: editingDepartment.id, data: { name: updatedName } }));
       setEditingDepartment(null);
     }
   };
@@ -60,69 +51,22 @@ const DepartmentsPage = () => {
   return (
     <div className="p-6 mx-80">
       <h1 className="text-2xl font-bold mb-4">Departments</h1>
-
       {error && <p className="text-red-500">{error}</p>}
-
-      <form onSubmit={handleAddDepartment} className="mb-4 flex gap-2">
-        <Input
-          type="text"
-          placeholder="New Department Name"
-          value={newDepartment}
-          onChange={(e) => setNewDepartment(e.target.value)}
-          required
-        />
-        <Button type="submit" className="bg-green-500">
-          Add
-        </Button>
-      </form>
-
+      <DepartmentForm newDepartment={newDepartment} setNewDepartment={setNewDepartment} handleAddDepartment={handleAddDepartment} />
       {loading && <p>Loading departments...</p>}
-
       <ul className="space-y-4">
         {departments.map((department) => (
-          <li
+          <DepartmentItem
             key={department.id}
-            className="flex justify-between items-center p-3 border rounded"
-          >
-            {editingDepartment?.id === department.id ? (
-              <form onSubmit={handleUpdateDepartment} className="flex gap-2">
-                <Input
-                  type="text"
-                  value={updatedName}
-                  onChange={(e) => setUpdatedName(e.target.value)}
-                  required
-                />
-                <Button type="submit" className="bg-blue-500">
-                  Save
-                </Button>
-                <Button
-                  type="button"
-                  className="bg-gray-400"
-                  onClick={() => setEditingDepartment(null)}
-                >
-                  Cancel
-                </Button>
-              </form>
-            ) : (
-              <>
-                <span>{department.name}</span>
-                <div className="flex gap-2">
-                  <Button
-                    className="bg-blue-500"
-                    onClick={() => handleEditClick(department)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    className="bg-red-500"
-                    onClick={() => handleDeleteDepartment(department.id)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </>
-            )}
-          </li>
+            department={department}
+            handleEditClick={handleEditClick}
+            handleDeleteDepartment={handleDeleteDepartment}
+            editingDepartment={editingDepartment}
+            updatedName={updatedName}
+            setUpdatedName={setUpdatedName}
+            handleUpdateDepartment={handleUpdateDepartment}
+            setEditingDepartment={setEditingDepartment}
+          />
         ))}
       </ul>
     </div>
