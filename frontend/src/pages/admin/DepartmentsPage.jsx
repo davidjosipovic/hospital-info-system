@@ -11,7 +11,11 @@ import DepartmentItem from "../../features/departments/components/DepartmentItem
 
 const DepartmentsPage = () => {
   const dispatch = useDispatch();
-  const { list: departments, loading, error } = useSelector((state) => state.departments);
+  const {
+    list: departments,
+    loading,
+    error,
+  } = useSelector((state) => state.departments);
 
   const [newDepartment, setNewDepartment] = useState("");
   const [editingDepartment, setEditingDepartment] = useState(null);
@@ -37,7 +41,12 @@ const DepartmentsPage = () => {
   const handleUpdateDepartment = (e) => {
     e.preventDefault();
     if (updatedName.trim()) {
-      dispatch(editDepartment({ id: editingDepartment.id, data: { name: updatedName } }));
+      dispatch(
+        editDepartment({
+          id: editingDepartment.id,
+          data: { id: editingDepartment.id, name: updatedName },
+        })
+      ).then(() => dispatch(fetchDepartments()));
       setEditingDepartment(null);
     }
   };
@@ -52,7 +61,11 @@ const DepartmentsPage = () => {
     <div className="p-6 mx-80">
       <h1 className="text-2xl font-bold mb-4">Departments</h1>
       {error && <p className="text-red-500">{error}</p>}
-      <DepartmentForm newDepartment={newDepartment} setNewDepartment={setNewDepartment} handleAddDepartment={handleAddDepartment} />
+      <DepartmentForm
+        newDepartment={newDepartment}
+        setNewDepartment={setNewDepartment}
+        handleAddDepartment={handleAddDepartment}
+      />
       {loading && <p>Loading departments...</p>}
       <ul className="space-y-4">
         {departments.map((department) => (

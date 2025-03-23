@@ -32,7 +32,9 @@ const SpecializationsPage = () => {
   };
 
   const handleUpdateSpecialization = (id, name) => {
-    dispatch(editSpecialization({ id, data: { name } }));
+    dispatch(editSpecialization({ id, data: { id, name } })).then(() => {
+      dispatch(fetchSpecializations());
+    });
     setEditingSpecialization(null);
   };
 

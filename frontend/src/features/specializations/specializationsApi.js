@@ -12,6 +12,7 @@ export const getSpecializations = async () => {
 
 export const createSpecialization = async (specializationData) => {
   try {
+    console.log(specializationData)
     const response = await api.post("/specializations", specializationData);
     return response.data;
   } catch (error) {
@@ -22,7 +23,9 @@ export const createSpecialization = async (specializationData) => {
 
 export const updateSpecialization = async (id, specializationData) => {
   try {
+    console.log(id,specializationData)
     const response = await api.put(`/specializations/${id}`, specializationData);
+    
     return response.data;
   } catch (error) {
     throw error.response?.data || "Greška pri ažuriranju specijalizacije.";

@@ -23,6 +23,7 @@ export const createDepartment = async (doctorData) => {
 
 export const updateDepartment = async (id, doctorData) => {
   try {
+    console.log(id,doctorData)
     const response = await api.put(`/departments/${id}`, doctorData);
     return response.data;
   } catch (error) {
