@@ -79,7 +79,7 @@ const DoctorsPage = () => {
   });
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-6xl mx-auto p-6 px-60 bg-white rounded-lg shadow-lg">
       <DoctorsHeader role={role} onAddDoctor={handleAddDoctor} />
       <DoctorsSearch search={search} setSearch={setSearch} />
 
