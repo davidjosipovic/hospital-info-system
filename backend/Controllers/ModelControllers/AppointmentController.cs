@@ -12,7 +12,6 @@ public class AppointmentsController : ControllerBase
         _context = context;
     }
 
-    // GET: api/appointments
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
     {
@@ -22,7 +21,6 @@ public class AppointmentsController : ControllerBase
             .ToListAsync();
     }
 
-    // GET: api/appointments/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<Appointment>> GetAppointment(Guid id)
     {
@@ -39,7 +37,6 @@ public class AppointmentsController : ControllerBase
         return appointment;
     }
 
-    // POST: api/appointments
     [HttpPost]
     public async Task<ActionResult<Appointment>> CreateAppointment(Appointment appointment)
     {
@@ -70,10 +67,10 @@ public async Task<IActionResult> UpdateAppointment(Guid id, Appointment appointm
     var existingAppointment = await _context.Appointments.FindAsync(id);
     if (existingAppointment == null)
     {
-        return NotFound(); // ✅ Return NotFound if the appointment does not exist
+        return NotFound(); 
     }
 
-    // ✅ Return NotFound instead of BadRequest for missing patient/doctor
+
     var patientExists = await _context.Patients.AnyAsync(p => p.Id == appointment.PatientId);
     if (!patientExists)
     {
@@ -106,8 +103,6 @@ public async Task<IActionResult> UpdateAppointment(Guid id, Appointment appointm
 }
 
 
-
-    // DELETE: api/appointments/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAppointment(Guid id)
     {

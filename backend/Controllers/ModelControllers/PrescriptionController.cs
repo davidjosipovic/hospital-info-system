@@ -12,7 +12,7 @@ public class PrescriptionsController : ControllerBase
         _context = context;
     }
 
-    // GET: api/prescriptions
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Prescription>>> GetPrescriptions()
     {
@@ -22,7 +22,7 @@ public class PrescriptionsController : ControllerBase
             .ToListAsync();
     }
 
-    // GET: api/prescriptions/{id}
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Prescription>> GetPrescription(Guid id)
     {
@@ -39,11 +39,11 @@ public class PrescriptionsController : ControllerBase
         return prescription;
     }
 
-    // POST: api/prescriptions
+
     [HttpPost]
     public async Task<ActionResult<Prescription>> CreatePrescription(Prescription prescription)
     {
-        // Validate foreign keys
+ 
         if (!_context.Patients.Any(p => p.Id == prescription.PatientId))
         {
             return BadRequest("Invalid PatientId.");
@@ -60,7 +60,7 @@ public class PrescriptionsController : ControllerBase
         return CreatedAtAction(nameof(GetPrescription), new { id = prescription.Id }, prescription);
     }
 
-    // PUT: api/prescriptions/{id}
+
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdatePrescription(Guid id, Prescription prescription)
     {
@@ -69,7 +69,7 @@ public class PrescriptionsController : ControllerBase
             return BadRequest();
         }
 
-        // Validate foreign keys
+
         if (!_context.Patients.Any(p => p.Id == prescription.PatientId))
         {
             return BadRequest("Invalid PatientId.");
@@ -101,7 +101,7 @@ public class PrescriptionsController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/prescriptions/{id}
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePrescription(Guid id)
     {

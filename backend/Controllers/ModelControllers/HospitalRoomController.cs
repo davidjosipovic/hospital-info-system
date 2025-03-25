@@ -34,13 +34,13 @@ public class HospitalRoomsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<HospitalRoom>> CreateHospitalRoom(HospitalRoom hospitalRoom)
     {
-        // Ensure room number is unique
+
         if (_context.HospitalRooms.Any(r => r.RoomNumber == hospitalRoom.RoomNumber))
         {
             return BadRequest("Room number must be unique.");
         }
 
-        // Ensure CurrentPatients does not exceed Capacity
+
         if (hospitalRoom.CurrentPatients > hospitalRoom.Capacity)
         {
             return BadRequest("Current patients cannot exceed room capacity.");
@@ -60,13 +60,13 @@ public class HospitalRoomsController : ControllerBase
             return BadRequest();
         }
 
-        // Ensure room number is still unique (if changed)
+
         if (_context.HospitalRooms.Any(r => r.RoomNumber == hospitalRoom.RoomNumber && r.Id != id))
         {
             return BadRequest("Room number must be unique.");
         }
 
-        // Ensure CurrentPatients does not exceed Capacity
+
         if (hospitalRoom.CurrentPatients > hospitalRoom.Capacity)
         {
             return BadRequest("Current patients cannot exceed room capacity.");

@@ -12,14 +12,13 @@ public class SpecializationsController : ControllerBase
         _context = context;
     }
 
-    // GET: api/specializations
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Specialization>>> GetSpecializations()
     {
         return await _context.Specializations.ToListAsync();
     }
 
-    // GET: api/specializations/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<Specialization>> GetSpecialization(Guid id)
     {
@@ -33,7 +32,7 @@ public class SpecializationsController : ControllerBase
         return specialization;
     }
 
-    // POST: api/specializations
+
     [HttpPost]
     public async Task<ActionResult<Specialization>> CreateSpecialization(Specialization specialization)
     {
@@ -43,7 +42,7 @@ public class SpecializationsController : ControllerBase
         return CreatedAtAction(nameof(GetSpecialization), new { id = specialization.Id }, specialization);
     }
 
-    // PUT: api/specializations/{id}
+
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateSpecialization(Guid id, Specialization specialization)
     {
@@ -73,7 +72,6 @@ public class SpecializationsController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/specializations/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSpecialization(Guid id)
     {

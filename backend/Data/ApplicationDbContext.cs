@@ -26,7 +26,6 @@ public class ApplicationDbContext : IdentityDbContext<User>
     {
         base.OnModelCreating(modelBuilder);
 
-        // ✅ Explicitly define foreign key relationships
         modelBuilder.Entity<Doctor>()
             .HasOne(d => d.User)
             .WithMany()

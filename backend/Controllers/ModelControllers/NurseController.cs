@@ -12,7 +12,7 @@ public class NursesController : ControllerBase
         _context = context;
     }
 
-    // GET: api/nurses
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Nurse>>> GetNurses()
     {
@@ -22,7 +22,6 @@ public class NursesController : ControllerBase
             .ToListAsync();
     }
 
-    // GET: api/nurses/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<Nurse>> GetNurse(Guid id)
     {
@@ -39,11 +38,10 @@ public class NursesController : ControllerBase
         return nurse;
     }
 
-    // POST: api/nurses
     [HttpPost]
     public async Task<ActionResult<Nurse>> CreateNurse(Nurse nurse)
     {
-        // Validate foreign keys
+
         if (!_context.Users.Any(u => u.Id == nurse.UserId))
         {
             return BadRequest("Invalid UserId.");
@@ -60,7 +58,7 @@ public class NursesController : ControllerBase
         return CreatedAtAction(nameof(GetNurse), new { id = nurse.Id }, nurse);
     }
 
-    // PUT: api/nurses/{id}
+
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateNurse(Guid id, Nurse nurse)
     {
@@ -69,7 +67,7 @@ public class NursesController : ControllerBase
             return BadRequest();
         }
 
-        // Validate foreign keys
+    
         if (!_context.Users.Any(u => u.Id == nurse.UserId))
         {
             return BadRequest("Invalid UserId.");
@@ -101,7 +99,7 @@ public class NursesController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/nurses/{id}
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteNurse(Guid id)
     {

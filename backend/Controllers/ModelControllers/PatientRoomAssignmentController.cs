@@ -12,7 +12,7 @@ public class PatientRoomAssignmentsController : ControllerBase
         _context = context;
     }
 
-    // GET: api/patientroomassignments
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PatientRoomAssignment>>> GetPatientRoomAssignments()
     {
@@ -22,7 +22,7 @@ public class PatientRoomAssignmentsController : ControllerBase
             .ToListAsync();
     }
 
-    // GET: api/patientroomassignments/{id}
+
     [HttpGet("{id}")]
     public async Task<ActionResult<PatientRoomAssignment>> GetPatientRoomAssignment(Guid id)
     {
@@ -39,11 +39,11 @@ public class PatientRoomAssignmentsController : ControllerBase
         return assignment;
     }
 
-    // POST: api/patientroomassignments
+
     [HttpPost]
     public async Task<ActionResult<PatientRoomAssignment>> CreatePatientRoomAssignment(PatientRoomAssignment assignment)
     {
-        // Validate foreign keys
+
         if (!_context.Patients.Any(p => p.Id == assignment.PatientId))
         {
             return BadRequest("Invalid PatientId.");
@@ -60,7 +60,7 @@ public class PatientRoomAssignmentsController : ControllerBase
         return CreatedAtAction(nameof(GetPatientRoomAssignment), new { id = assignment.Id }, assignment);
     }
 
-    // PUT: api/patientroomassignments/{id}
+
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdatePatientRoomAssignment(Guid id, PatientRoomAssignment assignment)
     {
@@ -69,7 +69,7 @@ public class PatientRoomAssignmentsController : ControllerBase
             return BadRequest();
         }
 
-        // Validate foreign keys
+
         if (!_context.Patients.Any(p => p.Id == assignment.PatientId))
         {
             return BadRequest("Invalid PatientId.");
@@ -101,7 +101,7 @@ public class PatientRoomAssignmentsController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/patientroomassignments/{id}
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePatientRoomAssignment(Guid id)
     {

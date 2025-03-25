@@ -12,7 +12,7 @@ public class MedicalRecordsController : ControllerBase
         _context = context;
     }
 
-    // GET: api/medicalrecords
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MedicalRecord>>> GetMedicalRecords()
     {
@@ -22,7 +22,7 @@ public class MedicalRecordsController : ControllerBase
             .ToListAsync();
     }
 
-    // GET: api/medicalrecords/{id}
+
     [HttpGet("{id}")]
     public async Task<ActionResult<MedicalRecord>> GetMedicalRecord(Guid id)
     {
@@ -39,11 +39,11 @@ public class MedicalRecordsController : ControllerBase
         return medicalRecord;
     }
 
-    // POST: api/medicalrecords
+ 
     [HttpPost]
     public async Task<ActionResult<MedicalRecord>> CreateMedicalRecord(MedicalRecord medicalRecord)
     {
-        // Validate foreign keys
+
         if (!_context.Patients.Any(p => p.Id == medicalRecord.PatientId))
         {
             return BadRequest("Invalid PatientId.");
@@ -60,7 +60,6 @@ public class MedicalRecordsController : ControllerBase
         return CreatedAtAction(nameof(GetMedicalRecord), new { id = medicalRecord.Id }, medicalRecord);
     }
 
-    // PUT: api/medicalrecords/{id}
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateMedicalRecord(Guid id, MedicalRecord medicalRecord)
     {
@@ -69,7 +68,6 @@ public class MedicalRecordsController : ControllerBase
             return BadRequest();
         }
 
-        // Validate foreign keys
         if (!_context.Patients.Any(p => p.Id == medicalRecord.PatientId))
         {
             return BadRequest("Invalid PatientId.");
@@ -101,7 +99,6 @@ public class MedicalRecordsController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/medicalrecords/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteMedicalRecord(Guid id)
     {

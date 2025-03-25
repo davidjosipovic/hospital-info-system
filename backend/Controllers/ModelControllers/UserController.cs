@@ -15,14 +15,12 @@ public class UsersController : ControllerBase
         _userManager = userManager;
     }
 
-    // GET: api/users
     [HttpGet]
     public async Task<ActionResult<IEnumerable<User>>> GetUsers()
     {
         return await _userManager.Users.ToListAsync();
     }
 
-    // GET: api/users/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<User>> GetUser(string id)
     {
@@ -53,12 +51,12 @@ public async Task<IActionResult> UpdateUser(string id, [FromBody] Dictionary<str
 
         if (update.Value == null)
         {
-            continue; // Ignore null values
+            continue; 
         }
 
         try
         {
-            // 🔹 Handle Password Changes Properly
+         
             if (update.Key.Equals("password", StringComparison.OrdinalIgnoreCase))
             {
                 if (!updates.ContainsKey("oldPassword"))
@@ -75,10 +73,10 @@ public async Task<IActionResult> UpdateUser(string id, [FromBody] Dictionary<str
                     return BadRequest(passwordChangeResult.Errors);
                 }
 
-                continue; // Skip normal property update
+                continue; 
             }
 
-            // 🔹 Special Handling for Role Validation
+    
             if (update.Key.Equals("role", StringComparison.OrdinalIgnoreCase))
             {
                 if (!Enum.TryParse(typeof(UserRole), update.Value.ToString(), true, out var roleValue))
@@ -89,7 +87,7 @@ public async Task<IActionResult> UpdateUser(string id, [FromBody] Dictionary<str
                 continue;
             }
 
-            // 🔹 Special Handling for Email (Also Update UserName)
+   
             if (update.Key.Equals("email", StringComparison.OrdinalIgnoreCase))
             {
                 existingUser.UserName = update.Value.ToString();
@@ -97,7 +95,7 @@ public async Task<IActionResult> UpdateUser(string id, [FromBody] Dictionary<str
                 continue;
             }
 
-            // 🔹 Convert values properly
+     
             object? convertedValue = update.Value;
 
             if (property != null)
@@ -142,7 +140,7 @@ public async Task<IActionResult> UpdateUser(string id, [FromBody] Dictionary<str
 }
 
 
-    // DELETE: api/users/{id}
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(string id)
     {
