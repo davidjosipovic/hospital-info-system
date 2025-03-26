@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers, deleteUser, updateUser } from "../../features/users/usersSlice";
 import UserForm from "../../features/users/components/UserForm";
@@ -15,6 +15,7 @@ const UsersPage = () => {
   }, [dispatch]);
 
   const handleDelete = (id) => {
+    if(window.confirm("Are you sure you want to delete this user?"))
     dispatch(deleteUser(id));
   };
 
@@ -27,10 +28,16 @@ const UsersPage = () => {
     setEditingUser(null);
   };
 
-  const filteredUsers = users.filter((user) => {
-    const fullName = `${user.firstName} ${user.lastName}`.trim().toLowerCase();
-    return fullName.includes(search.toLowerCase()) || user.email.toLowerCase().includes(search.toLowerCase());
-  });
+  const filteredUsers=useMemo(()=>{
+    const searchLower = search.toLowerCase();
+    return users.filter((user) => {
+      const fullName = `${user.firstName} ${user.lastName}`.trim().toLowerCase();
+      return fullName.includes(searchLower) || user.email.toLowerCase().includes(searchLower);
+    });
+
+  },[users, search])
+
+  
 
   return (
     <div className="p-6 mx-80">
