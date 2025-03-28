@@ -11,16 +11,12 @@ import { fetchDepartments } from "../../features/departments/departmentsSlice";
 import { fetchSpecializations } from "../../features/specializations/specializationsSlice";
 import DoctorsHeader from "../../features/doctors/components/DoctorsHeader";
 import DoctorsSearch from "../../features/doctors/components/DoctorsSearch";
-import DoctorsList from "../../features/doctors/components/DoctorsList";
 import DoctorFormModal from "../../features/doctors/components/DoctorFormModal";
+import Table2 from "../../components/ui/Table2";
 
 const DoctorsPage = () => {
   const dispatch = useDispatch();
-  const {
-    doctors = [],
-    loading,
-    error,
-  } = useSelector((state) => state.doctors || { doctors: [] });
+  const { doctors = [], loading, error } = useSelector((state) => state.doctors || { doctors: [] });
   const { users = [] } = useSelector((state) => state.users || { users: [] });
   const { role } = useSelector((state) => state.auth || {});
 
@@ -41,7 +37,8 @@ const DoctorsPage = () => {
     }
   };
 
-  const handleEdit = (doctor) => {
+  const handleEdit = (item) => {
+    const doctor = doctors.find((doc) => doc.id === item.id); // Find doctor by ID
     setSelectedDoctor(doctor);
     setIsModalOpen(true);
   };
@@ -66,15 +63,24 @@ const DoctorsPage = () => {
     setSelectedDoctor(null);
   };
 
-  const filteredDoctors = (doctors ?? []).filter((doctor) => {
-    const user = users.find((user) => user.id === doctor.userId);
-    const fullName = `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+  // Merge doctors with their corresponding users
+  const mergedDoctors = (doctors ?? []).map((doctor) => {
+    const user = users.find((user) => user.id === doctor.userId) || {};
+    return {
+      id: doctor.id,
+      firstName: user.firstName ?? "N/A",
+      lastName: user.lastName ?? "N/A",
+      specialization: doctor.specialization?.name ?? "N/A",
+      department: doctor.department?.name ?? "N/A",
+    };
+  });
 
+  // Apply search filtering
+  const filteredDoctors = mergedDoctors.filter((doctor) => {
+    const fullName = `${doctor.firstName} ${doctor.lastName}`.trim().toLowerCase();
     return (
-      fullName.toLowerCase().includes((search ?? "").toLowerCase()) ||
-      doctor.specialization?.name
-        .toLowerCase()
-        .includes((search ?? "").toLowerCase())
+      fullName.includes(search.toLowerCase()) ||
+      doctor.specialization.toLowerCase().includes(search.toLowerCase())
     );
   });
 
@@ -87,12 +93,14 @@ const DoctorsPage = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && (
-        <DoctorsList
-          doctors={filteredDoctors}
-          onDelete={role === "admin" ? handleDelete : null}
-          onEdit={role === "admin" ? handleEdit : null}
-        />
+       <Table2
+       data={filteredDoctors}
+       onDelete={role === "admin" ? handleDelete : null}
+       onEdit={role === "admin" ? handleEdit : null}
+     />
       )}
+
+      
 
       {isModalOpen && (
         <DoctorFormModal

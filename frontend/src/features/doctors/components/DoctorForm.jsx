@@ -56,6 +56,7 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
     }
 
     const payload = {
+      id:formData.id,
       userId: formData.userId,
       departmentId: formData.departmentId,
       specializationId: formData.specializationId,
@@ -80,7 +81,7 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
         <form onSubmit={handleSubmit}>
           {!existingDoctor && (
             <div>
-              <label className="block font-medium mb-2">Select User</label>
+              <label className="block font-medium mt-2">Select User</label>
               {usersLoading ? (
                 <p>Loading users...</p>
               ) : (
@@ -106,7 +107,7 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
           )}
 
           <div>
-            <label className="block font-medium mb-2">
+            <label className="block font-medium mt-2">
               Select Specialization
             </label>
             {specializationsLoading ? (
@@ -133,7 +134,7 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
           </div>
 
           <div>
-            <label className="block font-medium mb-2">Select Department</label>
+            <label className="block font-medium mt-2">Select Department</label>
             {departmentsLoading ? (
               <p>Loading departments...</p>
             ) : (
@@ -156,7 +157,7 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
               </select>
             )}
           </div>
-
+          <label className="block font-medium mt-2">Years of experience</label>
           <Input
             name="yearsOfExperience"
             type="number"
