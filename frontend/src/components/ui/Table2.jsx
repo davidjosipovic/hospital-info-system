@@ -1,3 +1,5 @@
+import Button from "./Button" 
+
 const Table2 = ({ data, onEdit, onDelete }) => {
     if (!data || data.length === 0) return <p>No data available</p>;
   
@@ -32,20 +34,17 @@ const Table2 = ({ data, onEdit, onDelete }) => {
               {(onEdit || onDelete) && (
                 <td className="border p-2 flex gap-2">
                   {onEdit && (
-                    <button
-                      onClick={() => onEdit(item)}
-                      className="bg-blue-500 text-white px-2 py-1 rounded"
-                    >
-                      Edit
-                    </button>
+                    <Button onClick={()=>onEdit(item)} >
+                      Edit </Button>
+                    
                   )}
                   {onDelete && (
-                    <button
+                    <Button
                       onClick={() => onDelete(item.id)}
                       className="bg-red-500 text-white px-2 py-1 rounded"
                     >
                       Delete
-                    </button>
+                    </Button>
                   )}
                 </td>
               )}

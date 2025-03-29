@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Button from "../../../components/ui/Button";
 
 const UserForm = ({ user, onSave, onCancel }) => {
   const [formData, setFormData] = useState(user);
@@ -48,12 +49,12 @@ const UserForm = ({ user, onSave, onCancel }) => {
             />
           </label>
           <div className="flex justify-end mt-4">
-            <button type="button" onClick={onCancel} className="bg-gray-500 text-white px-3 py-1 rounded mr-2">
+            <Button type="button" onClick={onCancel} className="bg-gray-500 text-white px-3 py-1 rounded mr-2">
               Cancel
-            </button>
-            <button type="submit" className="bg-blue-500 text-white px-3 py-1 rounded">
+            </Button>
+            <Button type="submit" className="bg-blue-500 text-white px-3 py-1 rounded">
               Save
-            </button>
+            </Button>
           </div>
         </form>
       </div>

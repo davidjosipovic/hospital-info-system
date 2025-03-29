@@ -70,6 +70,7 @@ const DoctorsPage = () => {
       id: doctor.id,
       firstName: user.firstName ?? "N/A",
       lastName: user.lastName ?? "N/A",
+      yearsOfExperience: doctor.yearsOfExperience ?? "N/A",
       specialization: doctor.specialization?.name ?? "N/A",
       department: doctor.department?.name ?? "N/A",
     };
