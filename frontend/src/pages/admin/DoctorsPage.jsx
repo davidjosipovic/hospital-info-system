@@ -16,7 +16,11 @@ import Table2 from "../../components/ui/Table2";
 
 const DoctorsPage = () => {
   const dispatch = useDispatch();
-  const { doctors = [], loading, error } = useSelector((state) => state.doctors || { doctors: [] });
+  const {
+    doctors = [],
+    loading,
+    error,
+  } = useSelector((state) => state.doctors || { doctors: [] });
   const { users = [] } = useSelector((state) => state.users || { users: [] });
   const { role } = useSelector((state) => state.auth || {});
 
@@ -38,7 +42,7 @@ const DoctorsPage = () => {
   };
 
   const handleEdit = (item) => {
-    const doctor = doctors.find((doc) => doc.id === item.id); // Find doctor by ID
+    const doctor = doctors.find((doc) => doc.id === item.id);
     setSelectedDoctor(doctor);
     setIsModalOpen(true);
   };
@@ -63,7 +67,6 @@ const DoctorsPage = () => {
     setSelectedDoctor(null);
   };
 
-  // Merge doctors with their corresponding users
   const mergedDoctors = (doctors ?? []).map((doctor) => {
     const user = users.find((user) => user.id === doctor.userId) || {};
     return {
@@ -76,9 +79,10 @@ const DoctorsPage = () => {
     };
   });
 
-  // Apply search filtering
   const filteredDoctors = mergedDoctors.filter((doctor) => {
-    const fullName = `${doctor.firstName} ${doctor.lastName}`.trim().toLowerCase();
+    const fullName = `${doctor.firstName} ${doctor.lastName}`
+      .trim()
+      .toLowerCase();
     return (
       fullName.includes(search.toLowerCase()) ||
       doctor.specialization.toLowerCase().includes(search.toLowerCase())
@@ -94,14 +98,12 @@ const DoctorsPage = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && (
-       <Table2
-       data={filteredDoctors}
-       onDelete={role === "admin" ? handleDelete : null}
-       onEdit={role === "admin" ? handleEdit : null}
-     />
+        <Table2
+          data={filteredDoctors}
+          onDelete={role === "admin" ? handleDelete : null}
+          onEdit={role === "admin" ? handleEdit : null}
+        />
       )}
-
-      
 
       {isModalOpen && (
         <DoctorFormModal

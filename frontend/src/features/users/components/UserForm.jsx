@@ -49,10 +49,17 @@ const UserForm = ({ user, onSave, onCancel }) => {
             />
           </label>
           <div className="flex justify-end mt-4">
-            <Button type="button" onClick={onCancel} className="bg-gray-500 text-white px-3 py-1 rounded mr-2">
+            <Button
+              type="button"
+              onClick={onCancel}
+              className="bg-gray-500 text-white px-3 py-1 rounded mr-2"
+            >
               Cancel
             </Button>
-            <Button type="submit" className="bg-blue-500 text-white px-3 py-1 rounded">
+            <Button
+              type="submit"
+              className="bg-blue-500 text-white px-3 py-1 rounded"
+            >
               Save
             </Button>
           </div>
