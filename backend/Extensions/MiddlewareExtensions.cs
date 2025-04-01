@@ -4,7 +4,7 @@ public static class MiddlewareExtensions
 {
     public static void ConfigureCors(this IServiceCollection services)
     {
-        var allowedOrigin = Environment.GetEnvironmentVariable("REACT_APP_URL") ?? "http://localhost:5173";
+        var allowedOrigin = Environment.GetEnvironmentVariable("REACT_APP_URL") ?? "http://localhost:3000";
 
         services.AddCors(options =>
         {
