@@ -9,11 +9,11 @@ public static class ServiceExtensions
     public static void ConfigureDatabaseAndIdentity(this IServiceCollection services)
     {
       
-        var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
+        var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "db";
         var dbPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
         var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "HospitalDB";
         var dbUser = Environment.GetEnvironmentVariable("DB_USER") ?? "postgres";
-        var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "yourpassword";
+        var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "password";
 
         var connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}";
 

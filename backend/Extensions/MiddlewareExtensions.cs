@@ -68,7 +68,8 @@ public static class MiddlewareExtensions
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        app.UseSwagger();
+        app.UseSwaggerUI();
         // ✅ Enable Authentication & Authorization Middleware
         app.UseAuthentication();
         app.UseAuthorization();
