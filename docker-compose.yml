@@ -1,25 +1,6 @@
 version: '3.8'
 
 services:
-  backend:
-    build: ./backend
-    ports:
-      - "5214:5214"
-    depends_on:
-      - db
-    environment:
-      - ConnectionStrings__DefaultConnection=Host=db;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
-      - JWT_SECRET=${JWT_SECRET}
-    restart: always
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
-    restart: always
-
   db:
     image: postgres:15
     environment:
@@ -32,5 +13,39 @@ services:
       - pgdata:/var/lib/postgresql/data
     restart: always
 
+  backend:
+    build: ./backend
+    ports:
+      - "5214:5214"
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    restart: always
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: always
+
+  migration:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.migrations
+    depends_on:
+      - db
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    command: ["tail", "-f", "/dev/null"]
+
 volumes:
-  pgdata:
+  pgdata: {}

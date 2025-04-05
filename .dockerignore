@@ -1,0 +1,11 @@
+# Ignore node_modules and other dependencies
+node_modules
+npm-debug.log
+.npm
+.git
+.env
+.vscode
+*.md
+build
+dist
+*.log

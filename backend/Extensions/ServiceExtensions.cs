@@ -11,7 +11,7 @@ public static class ServiceExtensions
       
         var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "db";
         var dbPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
-        var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "HospitalDB";
+        var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "hospital_bis";
         var dbUser = Environment.GetEnvironmentVariable("DB_USER") ?? "postgres";
         var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "password";
 
