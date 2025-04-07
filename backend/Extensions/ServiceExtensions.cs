@@ -2,53 +2,54 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 using System.Text;
 
 public static class ServiceExtensions
 {
-    public static void ConfigureDatabaseAndIdentity(this IServiceCollection services)
+    public static void ConfigureDatabaseAndIdentity(this IServiceCollection services, IConfiguration configuration)
     {
-      
-        var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "db";
-        var dbPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
-        var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "hospital_bis";
-        var dbUser = Environment.GetEnvironmentVariable("DB_USER") ?? "postgres";
-        var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "password";
+        // Read PostgreSQL settings from appsettings.json or appsettings.{Environment}.json
+        var dbHost = configuration["PostgreSQL:DB_HOST"] ?? "db";
+        var dbPort = configuration["PostgreSQL:DB_PORT"] ?? "5432";
+        var dbName = configuration["PostgreSQL:DB_NAME"] ?? "hospital_bis";
+        var dbUser = configuration["PostgreSQL:DB_USER"] ?? "postgres";
+        var dbPassword = configuration["PostgreSQL:DB_PASSWORD"] ?? "password";
 
         var connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}";
 
-    
+        // Add DbContext
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
 
-
+        // Add Identity
         services.AddIdentity<User, IdentityRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultTokenProviders();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
     }
 
-    public static void ConfigureJwtAuthentication(this IServiceCollection services)
+    public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        // ✅ Read JWT Secret from Environment Variables
-        var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET");
-        var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "YourApp";
-        var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "YourUsers";
+        // Read JWT settings from appsettings.json or appsettings.{Environment}.json
+        var jwtSecret = configuration["JWT:JWT_SECRET"];
+        var jwtIssuer = configuration["JWT:JWT_ISSUER"] ?? "YourApp";
+        var jwtAudience = configuration["JWT:JWT_AUDIENCE"] ?? "YourUsers";
 
         if (string.IsNullOrEmpty(jwtSecret))
         {
             Console.WriteLine("ERROR: JWT_SECRET is null or empty!");
-            throw new Exception("JWT_SECRET is missing! Check your environment variables.");
+            throw new Exception("JWT_SECRET is missing! Check your configuration.");
         }
         else
         {
             Console.WriteLine($"✅ JWT_SECRET Loaded: {jwtSecret.Length} characters long");
         }
 
-        // ✅ Convert to bytes using UTF-8
+        // Convert to bytes using UTF-8
         var keyBytes = Encoding.UTF8.GetBytes(jwtSecret);
         var key = new SymmetricSecurityKey(keyBytes);
 
-        // ✅ Configure JWT Authentication
+        // Configure JWT Authentication
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -60,12 +61,12 @@ public static class ServiceExtensions
             options.SaveToken = true;
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = key, // ✅ Corrected: Pass `SymmetricSecurityKey`
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key, // Corrected: Pass `SymmetricSecurityKey`
                 ValidateIssuer = true,
-                ValidIssuer = jwtIssuer ?? "your_app",
+                ValidIssuer = jwtIssuer,
                 ValidateAudience = true,
-                ValidAudience = jwtAudience ?? "your_users",
+                ValidAudience = jwtAudience,
                 ValidateLifetime = true
             };
         });

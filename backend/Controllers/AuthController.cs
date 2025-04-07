@@ -50,7 +50,6 @@ public class AuthController : ControllerBase
         return Ok("User registered successfully.");
     }
 
-
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto model)
     {
@@ -64,7 +63,10 @@ public class AuthController : ControllerBase
 
     private string GenerateJwtToken(User user)
     {
-        var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET");
+        var jwtSecret = _configuration["JWT:JWT_SECRET"];
+        var jwtIssuer = _configuration["JWT:JWT_ISSUER"] ?? "your_app";
+        var jwtAudience = _configuration["JWT:JWT_AUDIENCE"] ?? "your_users";
+        var jwtExpirationMinutes = int.TryParse(_configuration["JWT:JWT_TOKEN_EXPIRATION_IN_MINUTES"], out var minutes) ? minutes : 120;
 
         if (string.IsNullOrEmpty(jwtSecret))
         {
@@ -82,21 +84,20 @@ public class AuthController : ControllerBase
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Id ?? ""),
-        new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
-        new Claim(ClaimTypes.Role, user.Role ?? "User")
-    };
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id ?? ""),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+            new Claim(ClaimTypes.Role, user.Role ?? "user")
+        };
 
         var token = new JwtSecurityToken(
-            issuer: Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "your_app",
-            audience: Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "your_users",
+            issuer: jwtIssuer,
+            audience: jwtAudience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(2),
+            expires: DateTime.UtcNow.AddMinutes(jwtExpirationMinutes),
             signingCredentials: credentials
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-
 }

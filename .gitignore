@@ -14,6 +14,7 @@ secrets.json
 # ASP.NET / EF Core
 Migrations/
 appsettings.Development.json
+appsettings.json
 appsettings.Production.json
 appsettings.Local.json
 appsettings.Staging.json
