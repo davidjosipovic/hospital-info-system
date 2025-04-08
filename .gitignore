@@ -14,11 +14,12 @@ secrets.json
 # ASP.NET / EF Core
 Migrations/
 appsettings.Development.json
-appsettings.json
 appsettings.Production.json
 appsettings.Local.json
 appsettings.Staging.json
 Generated_Code/
+backend/appsettings.json
+appsettings.json
 
 # Rider / VSCode / Visual Studio
 .vscode/
