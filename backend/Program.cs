@@ -1,4 +1,7 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,29 @@ builder.Services.ConfigureSwagger();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+// Global Exception Handling Middleware
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        context.Response.ContentType = "application/json";
+
+        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+        if (exceptionHandlerPathFeature?.Error != null)
+        {
+            var errorResponse = new
+            {
+                Message = "An unexpected error occurred. Please try again later.",
+                Details = exceptionHandlerPathFeature.Error.Message // Optional: Remove in production for security
+            };
+
+            var errorJson = JsonSerializer.Serialize(errorResponse);
+            await context.Response.WriteAsync(errorJson);
+        }
+    });
+});
 
 // Apply the custom middleware
 app.UseCustomMiddleware();
