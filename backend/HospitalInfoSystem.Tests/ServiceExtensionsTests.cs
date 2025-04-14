@@ -27,9 +27,9 @@ public class ServiceExtensionsTests
 
         // Set up IConfiguration
         var configurationBuilder = new ConfigurationBuilder()
-            .AddInMemoryCollection(new[]
+            .AddInMemoryCollection(new KeyValuePair<string, string?>[]
             {
-                new KeyValuePair<string, string>("ConnectionStrings:DefaultConnection", "Host=localhost;Port=5432;Database=test_db;Username=postgres;Password=password")
+                new KeyValuePair<string, string?>("ConnectionStrings:DefaultConnection", "Host=localhost;Port=5432;Database=test_db;Username=postgres;Password=password")
             });
         _configuration = configurationBuilder.Build();
 
