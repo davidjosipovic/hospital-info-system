@@ -68,7 +68,7 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
 
     onSave(payload);
     onClose();
-    window.location.reload();
+    navigate('/admin/doctors');
   };
 
   return (
