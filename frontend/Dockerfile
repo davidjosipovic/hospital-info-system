@@ -1,5 +1,5 @@
 # Development stage for hot reloading
-FROM node:20 AS dev
+FROM node:23-slim AS dev
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
 
-FROM node:20 AS build
+FROM node:23-slim AS build
 
 WORKDIR /app
 
@@ -25,7 +25,7 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:alpine
+FROM 1.27.4-alpine-slim	
 
 RUN mkdir -p /var/log/nginx
 
