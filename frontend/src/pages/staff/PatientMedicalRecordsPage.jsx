@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPatients } from "../../features/patients/patientsSlice";
 import { fetchDoctors } from "../../features/doctors/doctorsSlice";
-import {jwtDecode} from "jwt-decode";
-import { getMedicalRecordsByPatient, createMedicalRecordApi, deleteMedicalRecordApi, updateMedicalRecordApi } from "../../features/medicalRecords/medicalRecordsApi";
+import { jwtDecode } from "jwt-decode";
+import { getMedicalRecordsByPatient, createMedicalRecordApi, deleteMedicalRecordApi } from "../../features/medicalRecords/medicalRecordsApi";
 
 const PatientMedicalRecordsPage = () => {
   const { patientId } = useParams();
@@ -22,14 +22,13 @@ const PatientMedicalRecordsPage = () => {
   let doctorEmail = "";
   if (token) {
     try {
-      const decoded = jwtDecode(token); // Only this, no .default
+      const decoded = jwtDecode(token);
       doctorEmail = decoded.email;
     } catch (e) {
       doctorEmail = "";
     }
   }
 
-  // Find the doctorId for the logged-in doctor by email
   let doctorId = "";
   if (role === "doctor" && doctorEmail && Array.isArray(doctors)) {
     const doctor = doctors.find((d) => d.user && d.user.email === doctorEmail);
@@ -40,10 +39,8 @@ const PatientMedicalRecordsPage = () => {
     setLoading(true);
     setError(null);
     try {
-      // Use the API that fetches by patientId
       const allRecords = await getMedicalRecordsByPatient(patientId);
       setRecords(allRecords);
-      console.log(allRecords);
     } catch (err) {
       setError("Failed to fetch medical records.");
     }
@@ -52,7 +49,6 @@ const PatientMedicalRecordsPage = () => {
 
   useEffect(() => {
     fetchRecords();
-    // eslint-disable-next-line
   }, [patientId, doctorId]);
 
   useEffect(() => {
@@ -95,55 +91,55 @@ const PatientMedicalRecordsPage = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!doctors.length) return <p>Loading doctors...</p>;
-  if (!doctorId) return <p>Doctor ID not found. Please make sure you are logged in as a doctor.</p>;
+  if (loading) return <p className="text-center text-blue-500 font-semibold">Loading...</p>;
+  if (error) return <p className="text-center text-red-500 font-semibold">{error}</p>;
+  if (!doctors.length) return <p className="text-center text-gray-500">Loading doctors...</p>;
+  if (!doctorId) return <p className="text-center text-red-500">Doctor ID not found. Please make sure you are logged in as a doctor.</p>;
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-100 p-4">
-      <h1 className="text-2xl font-bold mb-4">Patient Medical Records</h1>
-      {patientsLoading && <p>Loading patient info...</p>}
+    <div className="min-h-screen flex flex-col items-center bg-gradient-to-r from-gray-100 to-gray-200 p-6">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Patient Medical Records</h1>
+      {patientsLoading && <p className="text-center text-blue-500 font-semibold">Loading patient info...</p>}
       {patient && (
-        <div className="mb-6 p-4 bg-white rounded shadow w-full max-w-2xl">
-          <h2 className="text-xl font-semibold mb-2">Patient Info</h2>
-          <div><b>Name:</b> {patient.firstName} {patient.lastName}</div>
-          <div><b>Date of Birth:</b> {new Date(patient.dateOfBirth).toLocaleDateString()}</div>
-          <div><b>Gender:</b> {patient.gender}</div>
-          <div><b>Phone:</b> {patient.phoneNumber || "N/A"}</div>
-          <div><b>Address:</b> {patient.address || "N/A"}</div>
-          <div><b>Emergency Contact:</b> {patient.emergencyContact || "N/A"}</div>
+        <div className="mb-8 p-6 bg-white rounded-lg shadow-lg w-full max-w-3xl">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-700">Patient Info</h2>
+          <div className="text-gray-600"><b>Name:</b> {patient.firstName} {patient.lastName}</div>
+          <div className="text-gray-600"><b>Date of Birth:</b> {new Date(patient.dateOfBirth).toLocaleDateString()}</div>
+          <div className="text-gray-600"><b>Gender:</b> {patient.gender}</div>
+          <div className="text-gray-600"><b>Phone:</b> {patient.phoneNumber || "N/A"}</div>
+          <div className="text-gray-600"><b>Address:</b> {patient.address || "N/A"}</div>
+          <div className="text-gray-600"><b>Emergency Contact:</b> {patient.emergencyContact || "N/A"}</div>
         </div>
       )}
-      <form onSubmit={handleCreate} className="bg-white rounded-lg shadow p-4 mb-8 flex flex-col gap-3 max-w-xl">
+      <form onSubmit={handleCreate} className="bg-white rounded-lg shadow-lg p-6 mb-10 flex flex-col gap-4 max-w-lg">
         <input
           type="text"
           placeholder="Diagnosis"
           value={newRecord.diagnosis}
           onChange={(e) => setNewRecord({ ...newRecord, diagnosis: e.target.value })}
-          className="border rounded px-3 py-2"
+          className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <input
           type="text"
           placeholder="Treatment"
           value={newRecord.treatment}
           onChange={(e) => setNewRecord({ ...newRecord, treatment: e.target.value })}
-          className="border rounded px-3 py-2"
+          className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Add Record</button>
+        <button type="submit" className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition">Add Record</button>
       </form>
-      <div className="w-full max-w-4xl bg-white shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Records</h2>
+      <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-700">Records</h2>
         {records.length === 0 ? (
-          <p>No records found for this patient.</p>
+          <p className="text-center text-gray-500">No records found for this patient.</p>
         ) : (
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
             {records.map((record) => (
-              <div key={record.id} className="bg-gray-50 rounded-lg shadow p-4 flex flex-col gap-2 border border-gray-100">
-                <div><b>Diagnosis:</b> {record.diagnosis}</div>
-                <div><b>Treatment:</b> {record.treatment}</div>
-                <div><b>Visit Date:</b> {new Date(record.visitDate).toLocaleDateString()}</div>
-                <button onClick={() => handleDelete(record.id)} className="mt-2 bg-red-500 text-white px-3 py-1 rounded self-end">Delete</button>
+              <div key={record.id} className="bg-gray-50 rounded-lg shadow p-6 flex flex-col gap-4 border border-gray-200">
+                <div className="text-gray-600"><b>Diagnosis:</b> {record.diagnosis}</div>
+                <div className="text-gray-600"><b>Treatment:</b> {record.treatment}</div>
+                <div className="text-gray-600"><b>Visit Date:</b> {new Date(record.visitDate).toLocaleDateString()}</div>
+                <button onClick={() => handleDelete(record.id)} className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition self-end">Delete</button>
               </div>
             ))}
           </div>

@@ -31,7 +31,7 @@ const PatientsPage = () => {
   const refreshPatients = () => {
     dispatch(fetchPatients()); 
   };
-  
+
   const handleAddPatient = () => {
     setSelectedPatient(null);
     setIsModalOpen(true);
@@ -56,12 +56,12 @@ const PatientsPage = () => {
   );
 
   return (
-    <div className="max-w-6xl mx-80 p-6 bg-white rounded-lg shadow-lg">
+    <div className="ml-64 max-w-6xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-lg">
       <PatientsHeader onAddPatient={handleAddPatient} />
       <PatientsSearch search={search} setSearch={setSearch} />
 
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {loading && <p className="text-center text-blue-500 font-semibold">Loading...</p>}
+      {error && <p className="text-center text-red-500 font-semibold">{error}</p>}
 
       {!loading && !error && (
         <PatientsList
@@ -72,12 +72,16 @@ const PatientsPage = () => {
       )}
 
       {isModalOpen && (
-        <PatientForm
-        onClose={handleCloseModal}
-        onSave={handleSavePatient}
-        existingPatient={selectedPatient}
-        refreshPatients={refreshPatients} 
-        />
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <PatientForm
+              onClose={handleCloseModal}
+              onSave={handleSavePatient}
+              existingPatient={selectedPatient}
+              refreshPatients={refreshPatients} 
+            />
+          </div>
+        </div>
       )}
     </div>
   );
