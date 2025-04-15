@@ -8,6 +8,7 @@ import departmentsReducer from "../features/departments/departmentsSlice";
 import specializationsReducer from  "../features/specializations/specializationsSlice";
 import roomsReducer from "../features/rooms/roomsSlice"
 import scheduleReducer from "../features/scheduleManagement/scheduleSlice"
+import medicalRecordsReducer from "../features/medicalRecords/medicalRecordsSlice";
 
 const store = configureStore({
   reducer: {
@@ -18,8 +19,9 @@ const store = configureStore({
     users: usersReducer,
     departments: departmentsReducer,
     specializations: specializationsReducer,
-    rooms:roomsReducer,
-    schedules:scheduleReducer
+    rooms: roomsReducer,
+    schedules: scheduleReducer,
+    medicalRecords: medicalRecordsReducer
   },
 });
 

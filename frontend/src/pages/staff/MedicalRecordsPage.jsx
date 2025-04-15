@@ -1,16 +1,15 @@
-import { useSelector } from "react-redux";
+import React from "react";
+import MedicalRecordsList from "../../features/medicalRecords/components/MedicalRecordsList";
 
-function BoilerPlate() {
-  const { user } = useSelector((state) => state.auth);
-
+const MedicalRecordsPage = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-blue-500">BoilerPlate</h2>
-        <p className="text-center mt-2">Welcome, {user?.firstName} {user?.lastName}!</p>
+    <div className="min-h-screen flex mx-80 flex-col items-center justify-center bg-gray-100 p-4">
+      <h1 className="text-2xl font-bold mb-4">Medical Records</h1>
+      <div className="w-full max-w-4xl bg-white shadow-md rounded-lg p-6">
+        <MedicalRecordsList />
       </div>
     </div>
   );
-}
+};
 
-export default BoilerPlate;
+export default MedicalRecordsPage;
