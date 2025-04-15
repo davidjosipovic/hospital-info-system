@@ -14,13 +14,19 @@ public class MedicalRecordsController : ControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MedicalRecord>>> GetMedicalRecords()
+    public async Task<ActionResult<IEnumerable<MedicalRecord>>> GetMedicalRecords([FromQuery] Guid? patientId)
     {
-        return await _context.MedicalRecords
+        var query = _context.MedicalRecords
             .Include(m => m.Patient)
             .Include(m => m.Doctor)
-            .ToListAsync();
+            .AsQueryable();
+
+        if (patientId.HasValue)
+            query = query.Where(m => m.PatientId == patientId.Value);
+
+        return await query.ToListAsync();
     }
+
 
 
     [HttpGet("{id}")]

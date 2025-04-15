@@ -24,6 +24,7 @@ import MedicalRecordsPage from "./pages/staff/MedicalRecordsPage";  // New route
 import PrescriptionsPage from "./pages/staff/PrescriptionsPage";
 import SchedulesPage from "./pages/staff/SchedulesPage";
 import RoomAssignmentsPage from "./pages/staff/RoomAssignmentsPage";  // New route for room assignments
+import PatientMedicalRecordsPage from "./pages/staff/PatientMedicalRecordsPage";  // New route for patient medical records
 
 function App() {
   const { token } = useSelector((state) => state.auth);
@@ -136,6 +137,14 @@ function App() {
         element={
           <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
             <RoomAssignmentsPage />
+          </ProtectedRoleRoute>
+        }
+      />
+      <Route
+        path="/staff/patients/:patientId/medical-records"
+        element={
+          <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
+            <PatientMedicalRecordsPage />
           </ProtectedRoleRoute>
         }
       />

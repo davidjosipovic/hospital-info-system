@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const PatientsList = ({ patients, onDelete, onEdit }) => (
   <ul className="divide-y divide-gray-200">
@@ -15,6 +16,12 @@ const PatientsList = ({ patients, onDelete, onEdit }) => (
         <div>
           <button onClick={() => onEdit(patient)} className="text-blue-500">Edit</button>
           <button onClick={() => onDelete(patient.id)} className="text-red-500 ml-4">Delete</button>
+          <Link
+            to={`/staff/patients/${patient.id}/medical-records`}
+            className="ml-4 text-green-600 hover:underline"
+          >
+            Medical Records
+          </Link>
         </div>
       </li>
     ))}
