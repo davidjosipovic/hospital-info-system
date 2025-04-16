@@ -16,7 +16,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> GetUsers([FromQuery] string email)
+    public async Task<ActionResult<IEnumerable<User>>> GetUsers([FromQuery] string? email)
     {
         if (!string.IsNullOrEmpty(email))
         {
