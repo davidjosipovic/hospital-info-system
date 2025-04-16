@@ -97,7 +97,7 @@ const PatientMedicalRecordsPage = () => {
   if (!doctorId) return <p className="text-center text-red-500">Doctor ID not found. Please make sure you are logged in as a doctor.</p>;
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gradient-to-r from-gray-100 to-gray-200 p-6">
+    <div className="ml-64 max-w-8xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Patient Medical Records</h1>
       {patientsLoading && <p className="text-center text-blue-500 font-semibold">Loading patient info...</p>}
       {patient && (

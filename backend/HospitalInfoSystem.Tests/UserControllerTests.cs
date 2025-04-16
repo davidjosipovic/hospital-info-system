@@ -59,7 +59,7 @@ public class UsersControllerTests
         _mockUserManager.Setup(x => x.Users).Returns(mockUserDbSet.Object);
 
       
-        var result = await _controller.GetUsers();
+        var result = await _controller.GetUsers("john@example.com");
 
       
         result.Value.Should().NotBeNull();

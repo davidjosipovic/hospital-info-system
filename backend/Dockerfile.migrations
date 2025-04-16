@@ -15,6 +15,9 @@ COPY . .
 WORKDIR "/src"
 RUN dotnet publish "Backend.csproj" -c $BUILD_CONFIGURATION -o /App/out
 
+# Install dotnet-ef tool for migrations
+RUN dotnet tool install --global dotnet-ef
+
 # 5. Environment setup
 ENV PATH="$PATH:/root/.dotnet/tools"
 

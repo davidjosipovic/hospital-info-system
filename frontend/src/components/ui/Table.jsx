@@ -1,65 +1,53 @@
-const Table = ({ columns, data, actions }) => {
+import Button from "./Button";
+
+const Table = ({ data, onEdit, onDelete }) => {
+  if (!data || data.length === 0) return <p>No data available</p>;
+
+  const headers = Object.keys(data[0]);
+
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg">
-        <thead className="bg-gray-200">
-          <tr>
-            {columns.map((col, index) => (
-              <th key={index} className="py-2 px-4 border-b text-left">
-                {col.label}
-              </th>
-            ))}
-            {actions && <th className="py-2 px-4 border-b">Akcije</th>}
-          </tr>
-        </thead>
+    <table className="w-full border-collapse border border-gray-300">
+      <thead>
+        <tr className="bg-gray-100">
+          {headers.map((header) => (
+            <th key={header} className="border p-2 capitalize">
+              {header.replace(/_/g, " ")}
+            </th>
+          ))}
+          {(onEdit || onDelete) && <th className="border p-2">Actions</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item) => (
+          <tr key={item.id} className="border-b">
+            {headers.map((key) => {
+              const value = item[key];
 
-        <tbody>
-          {data.length === 0 ? (
-            <tr>
-              <td
-                colSpan={columns.length + (actions ? 1 : 0)}
-                className="text-center py-4"
-              >
-                Nema podataka
-              </td>
-            </tr>
-          ) : (
-            data.map((row, rowIndex) => (
-              <tr key={rowIndex} className="hover:bg-gray-100 transition">
-                {columns.map((col, colIndex) => (
-                  <td key={colIndex} className="py-2 px-4 border-b">
-                    {col.render
-                      ? col.render(row[col.accessor], row)
-                      : row[col.accessor]}
-                  </td>
-                ))}
-
-                {actions && (
-                  <td className="py-2 px-4 border-b flex gap-2">
-                    {actions.edit && (
-                      <button
-                        className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                        onClick={() => actions.edit(row)}
-                      >
-                        Edit
-                      </button>
-                    )}
-                    {actions.delete && (
-                      <button
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                        onClick={() => actions.delete(row)}
-                      >
-                        Delete
-                      </button>
-                    )}
-                  </td>
+              return (
+                <td key={key} className="border p-2">
+                  {typeof value === "object" && value !== null
+                    ? JSON.stringify(value)
+                    : value ?? "N/A"}
+                </td>
+              );
+            })}
+            {(onEdit || onDelete) && (
+              <td className="border p-2 flex gap-2">
+                {onEdit && <Button onClick={() => onEdit(item)}>Edit </Button>}
+                {onDelete && (
+                  <Button
+                    onClick={() => onDelete(item.id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded"
+                  >
+                    Delete
+                  </Button>
                 )}
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-    </div>
+              </td>
+            )}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 

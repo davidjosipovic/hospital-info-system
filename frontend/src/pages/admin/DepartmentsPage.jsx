@@ -58,7 +58,7 @@ const DepartmentsPage = () => {
   };
 
   return (
-    <div className="p-6 mx-80">
+    <div className="ml-64 max-w-8xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-4">Departments</h1>
       {error && <p className="text-red-500">{error}</p>}
       <DepartmentForm

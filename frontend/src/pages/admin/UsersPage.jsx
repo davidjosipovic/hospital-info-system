@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers, deleteUser, updateUser } from "../../features/users/usersSlice";
 import UserForm from "../../features/users/components/UserForm";
 import UserSearch from "../../features/users/components/UserSearch";
-import Table2 from "../../components/ui/Table2";
+import Table from "../../components/ui/Table";
 
 const UsersPage = () => {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const UsersPage = () => {
   }, [users, search]);
 
   return (
-    <div className="p-6 mx-80">
+    <div className="ml-64 max-w-8xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-4">Users List</h1>
       {loading && <p>Loading users...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
@@ -62,7 +62,7 @@ const UsersPage = () => {
       )}
 
       {!loading && !error && filteredUsers.length > 0 && (
-        <Table2
+        <Table
           data={filteredUsers}
           onDelete={role === "admin" ? handleDelete : null}
           onEdit={role === "admin" ? handleEdit : null}

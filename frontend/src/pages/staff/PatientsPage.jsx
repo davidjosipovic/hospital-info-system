@@ -56,7 +56,7 @@ const PatientsPage = () => {
   );
 
   return (
-    <div className="ml-64 max-w-6xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-lg">
+    <div className="ml-64 max-w-8xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-lg">
       <PatientsHeader onAddPatient={handleAddPatient} />
       <PatientsSearch search={search} setSearch={setSearch} />
 

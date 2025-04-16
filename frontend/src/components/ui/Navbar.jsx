@@ -120,7 +120,7 @@ const Navbar = () => {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 bg-gray-900 text-white p-2 rounded-md md:hidden"
+        className="fixed top-4 left-4 z-50 bg-gray-900 text-white px-3 py-1  rounded-md md:hidden"
       >
         ☰
       </button>

@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAppointments } from "../../features/appointments/appointmentsSlice";
-import AppointmentsList from "../../features/appointments/components/AppointmentsList";
-
+import Table from "../../components/ui/Table";
 const AppointmentsPage = () => {
   const dispatch = useDispatch();
   const { appointments, loading, error } = useSelector((state) => state.appointments);
@@ -12,13 +11,21 @@ const AppointmentsPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="ml-64 max-w-8xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-4">Termini</h2>
-
       {loading && <p>Učitavanje termina...</p>}
       {error && <p className="text-red-500">Greška: {error}</p>}
 
-      <AppointmentsList appointments={appointments} />
+      <Table
+      columns={[
+        { label: "ID", accessor: "id" },
+        { label: "Pacijent", accessor: "patientName" },
+        { label: "Liječnik", accessor: "doctorName" },
+        { label: "Datum", accessor: "appointmentDate" },
+        { label: "Status", accessor: "status" },
+      ]}
+      data={appointments}
+    />
     </div>
   );
 };

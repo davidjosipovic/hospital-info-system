@@ -12,7 +12,7 @@ import { fetchSpecializations } from "../../features/specializations/specializat
 import DoctorsHeader from "../../features/doctors/components/DoctorsHeader";
 import DoctorsSearch from "../../features/doctors/components/DoctorsSearch";
 import DoctorFormModal from "../../features/doctors/components/DoctorFormModal";
-import Table2 from "../../components/ui/Table2";
+import Table from "../../components/ui/Table";
 
 const DoctorsPage = () => {
   const dispatch = useDispatch();
@@ -90,7 +90,7 @@ const DoctorsPage = () => {
   });
 
   return (
-    <div className="max-w-6xl mx-auto p-6 px-60 bg-white rounded-lg shadow-lg">
+    <div className="ml-64 max-w-8xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-lg">
       <DoctorsHeader role={role} onAddDoctor={handleAddDoctor} />
       <DoctorsSearch search={search} setSearch={setSearch} />
 
@@ -98,7 +98,7 @@ const DoctorsPage = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && (
-        <Table2
+        <Table
           data={filteredDoctors}
           onDelete={role === "admin" ? handleDelete : null}
           onEdit={role === "admin" ? handleEdit : null}

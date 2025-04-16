@@ -25,6 +25,7 @@ import PrescriptionsPage from "./pages/staff/PrescriptionsPage";
 import SchedulesPage from "./pages/staff/SchedulesPage";
 import RoomAssignmentsPage from "./pages/staff/RoomAssignmentsPage";  // New route for room assignments
 import PatientMedicalRecordsPage from "./pages/staff/PatientMedicalRecordsPage";  // New route for patient medical records
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const { token } = useSelector((state) => state.auth);
@@ -37,6 +38,12 @@ function App() {
           <ProtectedRoleRoute allowedRoles={["admin"]}>
             <RegisterPage />
           </ProtectedRoleRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+            <ProfilePage />
         }
       />
       <Route
@@ -152,49 +159,51 @@ function App() {
   );
 
   return (
-    <div>
-      {token && <Navbar />}
-      <Routes>
-        <Route
-          path="/login"
-          element={!token ? <LoginPage /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/*"
-          element={
-            <AuthGuard>
-              <Routes>
-                {/* Admin Dashboard Route */}
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoleRoute allowedRoles={["admin"]}>
-                      <AdminDashboardPage />
-                    </ProtectedRoleRoute>
-                  }
-                />
-                {/* Staff Dashboard Route */}
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
-                      <StaffDashboardPage />
-                    </ProtectedRoleRoute>
-                  }
-                />
-                {/* Admin Routes */}
-                {adminRoutes}
+    <div className="flex h-screen ">
+      {token && <Navbar className="w-64 bg-gray-100 border-r" />}
+      <div className="flex-1 overflow-y-auto p-4">
+        <Routes>
+          <Route
+            path="/login"
+            element={!token ? <LoginPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/*"
+            element={
+              <AuthGuard>
+                <Routes>
+                  {/* Admin Dashboard Route */}
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoleRoute allowedRoles={["admin"]}>
+                        <AdminDashboardPage />
+                      </ProtectedRoleRoute>
+                    }
+                  />
+                  {/* Staff Dashboard Route */}
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoleRoute allowedRoles={["admin", "doctor", "nurse"]}>
+                        <StaffDashboardPage />
+                      </ProtectedRoleRoute>
+                    }
+                  />
+                  {/* Admin Routes */}
+                  {adminRoutes}
 
-                {/* Staff Routes */}
-                {staffRoutes}
+                  {/* Staff Routes */}
+                  {staffRoutes}
 
-                {/* 404 Route */}
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </AuthGuard>
-          }
-        />
-      </Routes>
+                  {/* 404 Route */}
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </AuthGuard>
+            }
+          />
+        </Routes>
+      </div>
     </div>
   );
 }
