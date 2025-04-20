@@ -56,7 +56,7 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
     }
 
     const payload = {
-      id:formData.id,
+      id: formData.id,
       userId: formData.userId,
       departmentId: formData.departmentId,
       specializationId: formData.specializationId,
@@ -72,24 +72,23 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-xl font-bold mb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-blue-100">
+        <h2 className="text-2xl font-bold mb-6 text-blue-700 text-center">
           {existingDoctor ? "Edit Doctor" : "Add New Doctor"}
         </h2>
-
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-4">
           {!existingDoctor && (
             <div>
-              <label className="block font-medium mt-2">Select User</label>
+              <label className="block font-medium mb-1 text-gray-700">Select User</label>
               {usersLoading ? (
-                <p>Loading users...</p>
+                <p className="text-gray-500">Loading users...</p>
               ) : (
                 <select
                   name="userId"
                   value={formData.userId || ""}
                   onChange={handleUserChange}
-                  className="w-full p-2 border rounded"
+                  className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                 >
                   <option value="">-- Select a user --</option>
                   {availableDoctorUsers.length > 0 ? (
@@ -107,17 +106,15 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
           )}
 
           <div>
-            <label className="block font-medium mt-2">
-              Select Specialization
-            </label>
+            <label className="block font-medium mb-1 text-gray-700">Select Specialization</label>
             {specializationsLoading ? (
-              <p>Loading specializations...</p>
+              <p className="text-gray-500">Loading specializations...</p>
             ) : (
               <select
                 name="specializationId"
                 value={formData.specializationId || ""}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="">-- Select a specialization --</option>
                 {specializations.length > 0 ? (
@@ -134,15 +131,15 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
           </div>
 
           <div>
-            <label className="block font-medium mt-2">Select Department</label>
+            <label className="block font-medium mb-1 text-gray-700">Select Department</label>
             {departmentsLoading ? (
-              <p>Loading departments...</p>
+              <p className="text-gray-500">Loading departments...</p>
             ) : (
               <select
                 name="departmentId"
                 value={formData.departmentId || ""}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="">-- Select a department --</option>
                 {departments.length > 0 ? (
@@ -157,20 +154,24 @@ const DoctorForm = ({ onClose, onSave, existingDoctor }) => {
               </select>
             )}
           </div>
-          <label className="block font-medium mt-2">Years of experience</label>
-          <Input
-            name="yearsOfExperience"
-            type="number"
-            placeholder="Years of Experience"
-            value={formData.yearsOfExperience || ""}
-            onChange={handleChange}
-          />
 
-          <div className="flex justify-end gap-4 mt-4">
-            <Button type="button" className="bg-gray-400" onClick={onClose}>
+          <div>
+            <label className="block font-medium mb-1 text-gray-700">Years of Experience</label>
+            <Input
+              name="yearsOfExperience"
+              type="number"
+              placeholder="Years of Experience"
+              value={formData.yearsOfExperience || ""}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          <div className="flex justify-end gap-4 mt-6">
+            <Button type="button" className="bg-gray-400 px-4 py-2 rounded-lg shadow hover:bg-gray-500 transition text-white" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-green-500">
+            <Button type="submit" className="bg-green-500 px-4 py-2 rounded-lg shadow hover:bg-green-600 transition text-white">
               {existingDoctor ? "Save Changes" : "Add Doctor"}
             </Button>
           </div>
