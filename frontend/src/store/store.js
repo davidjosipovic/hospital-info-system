@@ -9,6 +9,7 @@ import specializationsReducer from  "../features/specializations/specializations
 import roomsReducer from "../features/rooms/roomsSlice"
 import scheduleReducer from "../features/scheduleManagement/scheduleSlice"
 import medicalRecordsReducer from "../features/medicalRecords/medicalRecordsSlice";
+import roomAssignmentsReducer from "../features/roomAssignments/RoomAssignmentsSlice";
 
 const store = configureStore({
   reducer: {
@@ -21,7 +22,9 @@ const store = configureStore({
     specializations: specializationsReducer,
     rooms: roomsReducer,
     schedules: scheduleReducer,
-    medicalRecords: medicalRecordsReducer
+    medicalRecords: medicalRecordsReducer,
+    roomAssignments: roomAssignmentsReducer
+
   },
 });
 
