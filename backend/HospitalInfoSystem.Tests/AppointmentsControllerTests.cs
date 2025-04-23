@@ -1,9 +1,5 @@
-using Xunit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using FluentAssertions;
 
 public class AppointmentsControllerTests

@@ -1,16 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xunit;
 using FluentAssertions;
 using System.Text;
 using System.Reflection;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication;
 

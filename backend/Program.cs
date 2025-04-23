@@ -1,6 +1,4 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
 public class Program
