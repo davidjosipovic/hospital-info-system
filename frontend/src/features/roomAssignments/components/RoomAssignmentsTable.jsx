@@ -1,4 +1,3 @@
-// RoomAssignmentsTable.jsx
 import React from 'react';
 
 const RoomAssignmentsTable = ({ assignments, onEdit, onDelete }) => (

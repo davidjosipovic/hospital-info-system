@@ -14,17 +14,17 @@ import DoctorsPage from "./pages/admin/DoctorsPage";
 import DepartmentsPage from "./pages/admin/DepartmentsPage";
 import SpecializationsPage from "./pages/admin/SpecializationsPage";
 import UsersPage from "./pages/admin/UsersPage";
-import HospitalRoomsPage from "./pages/admin/RoomsPage";  // New route for managing rooms
+import HospitalRoomsPage from "./pages/admin/RoomsPage";  
 import ScheduleManagementPage from "./pages/admin/ScheduleManagementPage";
 
 import StaffDashboardPage from "./pages/staff/DashboardPage";
 import AppointmentsPage from "./pages/staff/AppointmentsPage";
 import PatientsPage from "./pages/staff/PatientsPage";
-import MedicalRecordsPage from "./pages/staff/MedicalRecordsPage";  // New route for managing medical records
+import MedicalRecordsPage from "./pages/staff/MedicalRecordsPage";  
 import PrescriptionsPage from "./pages/staff/PrescriptionsPage";
 import SchedulesPage from "./pages/staff/SchedulesPage";
-import RoomAssignmentsPage from "./pages/staff/RoomAssignmentsPage";  // New route for room assignments
-import PatientMedicalRecordsPage from "./pages/staff/PatientMedicalRecordsPage";  // New route for patient medical records
+import RoomAssignmentsPage from "./pages/staff/RoomAssignmentsPage";  
+import PatientMedicalRecordsPage from "./pages/staff/PatientMedicalRecordsPage"; 
 import ProfilePage from "./pages/ProfilePage";
 
 function App() {
@@ -172,7 +172,6 @@ function App() {
             element={
               <AuthGuard>
                 <Routes>
-                  {/* Admin Dashboard Route */}
                   <Route
                     path="/"
                     element={
@@ -181,7 +180,6 @@ function App() {
                       </ProtectedRoleRoute>
                     }
                   />
-                  {/* Staff Dashboard Route */}
                   <Route
                     path="/"
                     element={
@@ -190,13 +188,10 @@ function App() {
                       </ProtectedRoleRoute>
                     }
                   />
-                  {/* Admin Routes */}
                   {adminRoutes}
 
-                  {/* Staff Routes */}
                   {staffRoutes}
 
-                  {/* 404 Route */}
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </AuthGuard>

@@ -1,4 +1,3 @@
-// RoomAssignmentForm.jsx
 import React, { useState } from 'react';
 
 const RoomAssignmentForm = ({ patients, rooms, initial, onSubmit, onCancel }) => {

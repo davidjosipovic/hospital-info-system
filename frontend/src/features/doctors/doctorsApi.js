@@ -31,7 +31,7 @@ export const updateDoctor = async (doctorId, doctorData) => {
     if (!response.ok) {
       const errorData = await response.json();
       console.error("Update Doctor API Error:", errorData);
-      throw new Error(JSON.stringify(errorData)); // Ensure error is logged
+      throw new Error(JSON.stringify(errorData)); 
     }
 
     return await response.json();

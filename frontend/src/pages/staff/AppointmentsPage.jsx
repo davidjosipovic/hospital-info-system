@@ -7,7 +7,7 @@ const AppointmentsPage = () => {
   const { appointments, loading, error } = useSelector((state) => state.appointments);
 
   useEffect(() => {
-    dispatch(fetchAppointments()); // ✅ Dohvati termine kad se stranica učita
+    dispatch(fetchAppointments()); 
   }, [dispatch]);
 
   return (

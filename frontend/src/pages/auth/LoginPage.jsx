@@ -16,7 +16,7 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Reset error message
+    setErrorMessage(""); 
 
     const result = await dispatch(login(formData));
 

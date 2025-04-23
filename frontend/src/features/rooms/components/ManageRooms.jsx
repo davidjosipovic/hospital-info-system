@@ -23,7 +23,6 @@ const ManageRooms = () => {
     e.preventDefault();
     dispatch(editRoom({ id: editRoomData.id, roomData: editRoomData }))
       .then(() => {
-        // Re-fetch rooms after successful update to get the latest data
         dispatch(fetchRooms());
       });
     setIsEditing(false);
@@ -39,7 +38,6 @@ const ManageRooms = () => {
     setEditRoomData({ ...room });
   };
 
-  // Sort rooms after each update to avoid mutating the original array
   const sortedRooms = rooms.slice().sort((a, b) => a.roomNumber - b.roomNumber);
 
   if (status === 'loading') return <div>Loading...</div>;

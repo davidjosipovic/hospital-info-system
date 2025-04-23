@@ -9,21 +9,17 @@ const MedicalRecordsList = ({ patientId }) => {
   const { records, loading, error } = useSelector((state) => state.medicalRecords);
   const [newRecord, setNewRecord] = useState({ diagnosis: "", treatment: "", patientId: "", doctorId: "" });
 
-  // Get doctor userId and all patients from Redux
   const { userId, role } = useSelector((state) => state.auth || {});
   const { doctors = [] } = useSelector((state) => state.doctors || { doctors: [] });
   const { patients = [] } = useSelector((state) => state.patients || { patients: [] });
 
-  // Find the doctorId for the logged-in doctor (if role is doctor)
   let doctorId = "";
   if (role === "doctor" && userId && Array.isArray(doctors)) {
     const doctor = doctors.find((d) => d.userId === userId);
     if (doctor) doctorId = doctor.id;
   }
 
-  // Patient search state
   const [patientSearch, setPatientSearch] = useState("");
-  // Doctor search state
   const [doctorSearch, setDoctorSearch] = useState("");
 
   useEffect(() => {
@@ -36,7 +32,6 @@ const MedicalRecordsList = ({ patientId }) => {
   if (error) return <p>Error: {error}</p>;
 
   const safeRecords = Array.isArray(records) ? records : [];
-  // Filter records by patientId if provided
   const filteredRecords = patientId ? safeRecords.filter(r => r.patientId === patientId) : safeRecords;
 
   const handleCreate = () => {

@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as roomsApi from './roomsApi';
 
-// Async Thunks
 export const fetchRooms = createAsyncThunk('rooms/fetchRooms', async () => {
   return await roomsApi.getRooms();
 });
@@ -19,7 +18,6 @@ export const removeRoom = createAsyncThunk('rooms/removeRoom', async (id) => {
   return id;
 });
 
-// Slice
 const roomsSlice = createSlice({
   name: 'rooms',
   initialState: {
@@ -30,7 +28,6 @@ const roomsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Fetch rooms
       .addCase(fetchRooms.pending, (state) => {
         state.status = 'loading';
       })
@@ -42,18 +39,15 @@ const roomsSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
-      // Add room
       .addCase(addRoom.fulfilled, (state, action) => {
         state.rooms.push(action.payload);
       })
-      // Edit room
       .addCase(editRoom.fulfilled, (state, action) => {
         const index = state.rooms.findIndex((room) => room.id === action.payload.id);
         if (index !== -1) {
-          state.rooms[index] = action.payload; // Replace the room with the updated one
+          state.rooms[index] = action.payload; 
         }
       })
-      // Remove room
       .addCase(removeRoom.fulfilled, (state, action) => {
         state.rooms = state.rooms.filter((room) => room.id !== action.payload);
       });

@@ -32,7 +32,6 @@ const UsersPage = () => {
     window.location.reload();
   };
 
-  // Filter users based on search criteria
   const filteredUsers = useMemo(() => {
     const searchLower = search.toLowerCase();
     return users
@@ -41,7 +40,7 @@ const UsersPage = () => {
         firstName: user.firstName,
         lastName: user.lastName,
         email:user.email,
-        role: user.role, // Limit the data to only what you want to display
+        role: user.role, 
       }))
       .filter((user) => {
         const fullName = `${user.firstName} ${user.lastName}`.trim().toLowerCase();

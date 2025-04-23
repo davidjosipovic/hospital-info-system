@@ -1,4 +1,3 @@
-// RoomAssignmentsSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchRoomAssignments, createRoomAssignment, updateRoomAssignment, deleteRoomAssignment } from './RoomAssignmentsApi';
 

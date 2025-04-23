@@ -50,7 +50,7 @@ function RoomAssignmentsPage() {
 
     dispatch(action)
       .unwrap()
-      .then(() => dispatch(getRoomAssignments())) // Refresh assignments after add/edit
+      .then(() => dispatch(getRoomAssignments()))
       .catch((err) => console.error("Error saving assignment:", err));
 
     setShowForm(false);
