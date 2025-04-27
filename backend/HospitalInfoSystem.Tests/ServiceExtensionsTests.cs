@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Moq;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Xunit;
 
 public class ServiceExtensionsTests
 {

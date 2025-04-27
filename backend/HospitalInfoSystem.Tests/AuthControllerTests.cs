@@ -6,6 +6,7 @@ using System.Text;
 using System.Reflection;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication;
+using Xunit;
 
 public class AuthControllerTests
 {

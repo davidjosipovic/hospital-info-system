@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Xunit;
 
 public class UsersControllerTests
 {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FluentAssertions;
+using Xunit;
 
 public class AppointmentsControllerTests
 {
